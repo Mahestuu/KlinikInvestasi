@@ -1,4 +1,4 @@
-<footer class="w-full bg-blue-900 dark:bg-gray-900 ">
+<footer class="w-full  dark:from-gray-900 dark:to-gray-800 bg-gradient-to-br from-blue-800 to-blue-600 ">
     <div class="container mx-auto py-15">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 px-4 text-white ">
             <!-- Brand -->
@@ -42,7 +42,7 @@
                         <span>Senin - Kamis: 08.00 - 15.00 WIB</span>
                     </li>
                     <li>
-                        <span>Jumat: 08.00 - 14.00 WIB</span>
+                        <span>Jumat: 08.00 - 14.30 WIB</span>
                     </li>
                     <li>
                         <span>Sabtu: 09.00 - 12.00 WIB</span>

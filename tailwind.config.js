@@ -20,4 +20,9 @@ export default {
         },
     },
     plugins: [require("@tailwindcss/forms"), require("daisyui")],
+    // daisyui: {
+    //     themes: ["light", "dark"], // Sesuaikan tema sesuai kebutuhan
+    //     defaultTheme: 'light', // You can set a default theme here
+    //     darkTheme: 'dark',
+    // },
 };

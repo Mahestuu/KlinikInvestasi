@@ -5,6 +5,29 @@ import "./bootstrap";
 // import "swiper/css/navigation";
 // import "swiper/css/pagination";
 
+// // Theme Toggle Function
+// const toggleTheme = () => {
+//     const themeController = document.querySelector(".theme-controller");
+//     const currentTheme = document.documentElement.getAttribute("data-theme");
+//     const newTheme = currentTheme === "synthwave" ? "light" : "synthwave";
+
+//     document.documentElement.setAttribute("data-theme", newTheme);
+//     themeController.checked = newTheme === "synthwave";
+//     localStorage.setItem("theme", newTheme);
+//     console.log("Theme switched to:", newTheme); // Debug
+// };
+
+// // Initialize theme from localStorage
+// const savedTheme = localStorage.getItem("theme") || "light";
+// document.documentElement.setAttribute("data-theme", savedTheme);
+// document.querySelector(".theme-controller").checked =
+//     savedTheme === "synthwave";
+
+// // Attach toggleTheme to buttons
+// document.querySelectorAll('[onclick="toggleTheme()"]').forEach((button) => {
+//     button.addEventListener("click", toggleTheme);
+// });
+
 //LIVE SEARCH KBLI
 document.addEventListener("DOMContentLoaded", () => {
     const searchInput = document.getElementById("search-input");
@@ -66,60 +89,109 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
-// LIVE SEARCH PBUMKU
-document.addEventListener('DOMContentLoaded', function () {
-    const searchInput = document.getElementById('search-input');
-    const suggestionsList = document.getElementById('search-suggestions');
-    const dinasIdInput = document.getElementById('dinas_id');
+// Debounce function untuk menunda fetch request
+function debounce(func, wait) {
+    let timeout;
+    return function (...args) {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => func.apply(this, args), wait);
+    };
+}
 
-    // Only run if search input exists (to avoid errors on other pages)
-    if (searchInput && suggestionsList) {
-        const liveSearchUrl = searchInput.dataset.liveSearchUrl;
-        const dinasId = dinasIdInput ? dinasIdInput.value : '';
+// Live Search untuk PBUMKU
+document.addEventListener("DOMContentLoaded", () => {
+    const searchInput = document.getElementById("pbumku-search-input");
+    const suggestionsList = document.getElementById("pbumku-suggestions-list");
+    const suggestionsContainer = document.getElementById("pbumku-suggestions");
 
-        searchInput.addEventListener('input', async function () {
-            const query = this.value.trim();
+    if (searchInput && suggestionsList && suggestionsContainer) {
+        const debouncedSearch = debounce(async () => {
+            const query = searchInput.value.trim();
+            const liveSearchUrl = searchInput.getAttribute(
+                "data-live-search-url"
+            );
+            const dinasId = document.getElementById("dinas_id")?.value || "";
+
+            console.log(
+                "Fetching PBUMKU live search from:",
+                liveSearchUrl,
+                "with query:",
+                query,
+                "and dinas_id:",
+                dinasId
+            ); // Debug URL
 
             if (query.length < 2) {
-                suggestionsList.innerHTML = '';
-                suggestionsList.classList.add('hidden');
+                suggestionsContainer.classList.add("hidden");
+                suggestionsList.innerHTML = "";
                 return;
             }
 
             try {
-                const url = new URL(liveSearchUrl, window.location.origin);
-                if (query) url.searchParams.append('query', query);
-                if (dinasId) url.searchParams.append('dinas_id', dinasId);
-
-                const response = await fetch(url);
+                const response = await fetch(
+                    `${liveSearchUrl}?query=${encodeURIComponent(
+                        query
+                    )}&dinas_id=${encodeURIComponent(dinasId)}`
+                );
                 const results = await response.json();
+                console.log("PBUMKU Live Search Results:", results); // Debug JSON
 
-                suggestionsList.innerHTML = '';
+                suggestionsList.innerHTML = "";
                 if (results.length > 0) {
-                    results.forEach(result => {
-                        const li = document.createElement('li');
-                        li.innerHTML = `<a href="${result.search_url}" class="text-base-content hover:bg-blue-600 hover:text-white">${result.nama}</a>`;
+                    results.forEach((result) => {
+                        const showUrl =
+                            result.search_url ||
+                            window.pbumkuShowUrl.replace(
+                                ":pbumku_id",
+                                result.pbumku_id || result.id || "1"
+                            ); // Fallback
+                        if (!showUrl) {
+                            console.error(
+                                "No valid URL found in result:",
+                                result
+                            );
+                            return;
+                        }
+                        const li = document.createElement("li");
+                        li.className =
+                            "px-4 py-2 hover:bg-gray-200 dark:hover:bg-gray-700 cursor-pointer";
+                        li.innerHTML = `
+                            <a href="${showUrl}" class="flex flex-col">
+                                <strong>${result.nama}</strong>
+                                <span class="text-sm text-gray-600 dark:text-gray-400">Tidak ada deskripsi</span>
+                            </a>
+                        `;
+                        li.addEventListener("click", () => {
+                            console.log("Redirecting to:", showUrl); // Debug redirect
+                            window.location.href = showUrl;
+                        });
                         suggestionsList.appendChild(li);
                     });
-                    suggestionsList.classList.remove('hidden');
+                    suggestionsContainer.classList.remove("hidden");
                 } else {
-                    suggestionsList.classList.add('hidden');
+                    suggestionsContainer.classList.add("hidden");
                 }
             } catch (error) {
-                console.error('Error fetching suggestions:', error);
-                suggestionsList.innerHTML = '';
-                suggestionsList.classList.add('hidden');
+                console.error("Error fetching PBUMKU suggestions:", error);
+                suggestionsContainer.classList.add("hidden");
             }
-        });
+        }, 300); // Jeda 300ms
 
-        document.addEventListener('click', function (event) {
-            if (!searchInput.contains(event.target) && !suggestionsList.contains(event.target)) {
-                suggestionsList.classList.add('hidden');
+        searchInput.addEventListener("input", debouncedSearch);
+
+        // Sembunyikan dropdown saat klik di luar
+        document.addEventListener("click", (event) => {
+            if (
+                !suggestionsContainer.contains(event.target) &&
+                event.target !== searchInput
+            ) {
+                suggestionsContainer.classList.add("hidden");
             }
         });
     }
 });
 
+// PAGINATION BERANDA ATAS
 document.addEventListener("DOMContentLoaded", () => {
     console.log("DOM loaded, initializing Swiper");
     try {
