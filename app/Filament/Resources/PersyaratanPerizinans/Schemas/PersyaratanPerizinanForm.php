@@ -4,9 +4,9 @@ namespace App\Filament\Resources\PersyaratanPerizinans\Schemas;
 
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
-use Filament\Schemas\Schema;
-use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Repeater;
+use Filament\Schemas\Schema;
 use App\Models\Kbli;
 use Filament\Forms\Form;
 
@@ -36,13 +36,31 @@ class PersyaratanPerizinanForm
                             ->label('Sub-Persyaratan Perizinan')
                             ->schema([
                                 Textarea::make('item')
-                                    ->label('Item Sub-Persyaratan Perizinan')
+                                    ->label('Item Sub-Persyaratan')
                                     ->required()
-                                    ->placeholder('Masukkan item sub persyaratan perizinan'),
+                                    ->placeholder('Masukkan item sub-persyaratan')
+                                    ->rows(4)
+                                    ->columnSpan('full'),
+                                Repeater::make('details')
+                                    ->label('Turunan Sub-Persyaratan (Opsional)')
+                                    ->schema([
+                                        Textarea::make('text')
+                                            ->label('Teks Turunan')
+                                            ->required()
+                                            ->placeholder('Masukkan teks turunan')
+                                            ->rows(4)
+                                            ->columnSpan('full'),
+                                    ])
+                                    ->collapsible()
+                                    ->itemLabel(fn(array $state): ?string => $state['text'] ?? null)
+                                    ->addActionLabel('Tambah Turunan Sub-Persyaratan')
+                                    ->deleteAction(fn($action) => $action->requiresConfirmation())
+                                    ->grid(2)
+                                    ->columnSpan('full'),
                             ])
                             ->collapsible()
                             ->itemLabel(fn(array $state): ?string => $state['item'] ?? null)
-                            ->addActionLabel('Tambah Sub Persyaratan Perizinan KBLI')
+                            ->addActionLabel('Tambah Sub-Persyaratan Perizinan')
                             ->deleteAction(fn($action) => $action->requiresConfirmation())
                             ->grid(2)
                             ->columnSpan('full'),
@@ -75,20 +93,36 @@ class PersyaratanPerizinanForm
                         ->placeholder('Masukkan nama persyaratan')
                         ->columnSpan('full'),
                     Repeater::make('subpoin')
-                        ->label('Sub-Persyaratan Perizinan (Jika Sub-Persyaratan Perizinan kosong, Dihapus)')
+                        ->label('Sub-Persyaratan Perizinan')
                         ->schema([
                             Textarea::make('item')
-                                ->rows(10)
-                                ->cols(10)
-                                ->label('Item Sub-Persyaratan Perizinan')
+                                ->label('Item Sub-Persyaratan')
                                 ->required()
-                                ->placeholder('Masukkan item sub persyaratan perizinan'),
+                                ->placeholder('Masukkan item sub-persyaratan')
+                                ->rows(2)
+                                ->columnSpan('full'),
+                            Repeater::make('details')
+                                ->label('Turunan Sub-Persyaratan (Jika kosong, Dihapus)')
+                                ->schema([
+                                    Textarea::make('text')
+                                        ->label('Teks Turunan')
+                                        ->required()
+                                        ->placeholder('Masukkan teks turunan')
+                                        ->rows(4)
+                                        ->columnSpan('full'),
+                                ])
+                                ->collapsible()
+                                ->itemLabel(fn(array $state): ?string => $state['text'] ?? null)
+                                ->addActionLabel('Tambah Turunan Sub-Persyaratan')
+                                ->deleteAction(fn($action) => $action->requiresConfirmation())
+                                ->grid(2)
+                                ->columnSpan('full'),
                         ])
                         ->collapsible()
                         ->itemLabel(fn(array $state): ?string => $state['item'] ?? null)
-                        ->addActionLabel('Tambah Sub-Persyaratan Perizinan KBLI')
+                        ->addActionLabel('Tambah Sub-Persyaratan Perizinan')
                         ->deleteAction(fn($action) => $action->requiresConfirmation())
-                        ->grid(2)
+                        ->grid(1)
                         ->columnSpan('full'),
                 ])
                 ->collapsible()

@@ -69,6 +69,7 @@ class PbumkusTable
                         $record->kbli()->sync(array_column($data['kbli'], 'kbli_id'));
                     })
                     ->modalHeading('Ubah Pbumku')
+                    ->successNotificationTitle('Data berhasil disimpan')
                     ->modalSubmitActionLabel('Simpan')
                     ->modalCancelActionLabel('Batal')
                     ->modalWidth('lg'),
@@ -83,11 +84,16 @@ class PbumkusTable
                     ->modalCancelActionLabel('Batal')
                     ->action(function (Pbumku $record): void {
                         $record->delete();
-                    }),
+                    })
+                    ->successNotificationTitle('Data berhasil dihapus'),
+
             ])
             ->bulkActions([
                 BulkActionGroup::make([
-                    DeleteBulkAction::make()->label('Hapus Massal'),
+                    DeleteBulkAction::make()
+                        ->label('Hapus Massal')
+                        ->successNotificationTitle('Data berhasil dihapus'),
+
                 ]),
             ])
             ->toolbarActions([
@@ -103,6 +109,7 @@ class PbumkusTable
                         $pbumku->kbli()->sync(array_column($data['kbli'], 'kbli_id'));
                     })
                     ->modalHeading('Tambah Pbumku')
+                    ->successNotificationTitle('Data berhasil disimpan')
                     ->modalSubmitActionLabel('Simpan')
                     ->modalCancelActionLabel('Batal')
                     ->modalWidth('lg'),

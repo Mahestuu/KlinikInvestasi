@@ -54,6 +54,7 @@ class DinasTable
                         $record->update($data);
                     })
                     ->modalHeading('Ubah Dinas')
+                    ->successNotificationTitle('Data berhasil disimpan')
                     ->modalSubmitActionLabel('Simpan')
                     ->modalCancelActionLabel('Batal')
                     ->modalWidth('lg'),
@@ -68,11 +69,16 @@ class DinasTable
                     ->modalCancelActionLabel('Batal')
                     ->action(function (Dinas $record): void {
                         $record->delete();
-                    }),
+                    })
+                    ->successNotificationTitle('Data berhasil dihapus'),
+
             ])
             ->bulkActions([
                 BulkActionGroup::make([
-                    DeleteBulkAction::make()->label('Hapus Massal'),
+                    DeleteBulkAction::make()
+                        ->label('Hapus Massal')
+                        ->successNotificationTitle('Data berhasil dihapus'),
+
                 ]),
             ])
             ->toolbarActions([
@@ -85,6 +91,7 @@ class DinasTable
                         Dinas::create($data);
                     })
                     ->modalHeading('Tambah Dinas')
+                    ->successNotificationTitle('Data berhasil disimpan')
                     ->modalSubmitActionLabel('Simpan')
                     ->modalCancelActionLabel('Batal')
                     ->modalWidth('lg'),

@@ -29,7 +29,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             DinasSeeder::class,
             KategoriKbliSeeder::class,
-            KbliSeeder::class,
+            // KbliSeeder::class,
         ]);
     }
 }

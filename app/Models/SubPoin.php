@@ -14,4 +14,8 @@ class SubPoin extends Model
     {
         return $this->belongsTo(PersyaratanPerizinan::class, 'persyaratan_id', 'persyaratan_id');
     }
+      public function details()
+    {
+        return $this->hasMany(SubPoinDetail::class, 'subpoin_id');
+    }
 }

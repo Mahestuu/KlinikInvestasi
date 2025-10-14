@@ -1,8 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 {{-- <html lang="en" data-theme="{{ session('theme', 'light') }}"> --}}
+<html lang="{{ LaravelLocalization::getCurrentLocale() }}">
+
 
 <head>
+
+    <link rel="icon" href="{{ asset('images/logo_klinik1.png') }}">
 
     <meta charset="UTF-8">
     <meta name="csrf-token" content="{{ csrf_token() }}">

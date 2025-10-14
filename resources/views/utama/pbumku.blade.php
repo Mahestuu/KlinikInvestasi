@@ -1,6 +1,6 @@
 @extends('utama.app')
 
-@section('title', 'Klinik Investasi Surabaya - PB UMKU')
+@section('title', __('messages.pbumku_title_top'))
 
 @section('content')
     <!-- HERO SECTION -->
@@ -17,14 +17,13 @@
         </div>
 
         <div class="relative z-10 mx-auto px-5 xl:px-28 text-white" data-aos="fade-down" data-aos-duration="1000">
-            <div class="max-w-6xl">
+            <div class="max-w-8xl">
                 <h2
-                    class="text-3xl lg:text-5xl font-bold mb-6 bg-gradient-to-r from-white to-blue-100 bg-clip-text text-transparent">
-                    Perizinan Berusaha Untuk Menunjang Kegiatan Usaha
+                    class="py-2 text-3xl lg:text-5xl font-bold mb-6 bg-gradient-to-r from-white to-blue-100 bg-clip-text text-transparent">
+                    {{ __('messages.pbumku_title') }}
                 </h2>
                 <p class="text-lg lg:text-xl mb-6 opacity-90 leading-relaxed">
-                    Perizinan Berusaha untuk Menunjang Kegiatan Usaha (PB-UMKU) adalah bentuk perizinan yang wajib dimiliki
-                    dalam menjalankan usaha dan/atau produk ketika memasuki tahap operasional maupun komersial.
+                    {{ __('messages.pbumku_description_1') }}
                 </p>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
@@ -33,9 +32,8 @@
                             <i class="fas fa-file-alt text-white"></i>
                         </div>
                         <div>
-                            <h4 class="font-bold text-green-400 mb-2">Jenis PB-UMKU</h4>
-                            <p class="text-sm opacity-90">Izin, Persetujuan, Penetapan, Pengesahan, Penunjukan, Registrasi,
-                                Rekomendasi, Sertifikat, Sertifikasi, Konsultasi, hingga Surat Keterangan</p>
+                            <h4 class="font-bold text-green-400 mb-2">{{ __('messages.pbumku_types_title') }}</h4>
+                            <p class="text-sm opacity-90">{{ __('messages.pbumku_types_description') }}</p>
                         </div>
                     </div>
 
@@ -44,9 +42,8 @@
                             <i class="fas fa-exclamation-triangle text-white"></i>
                         </div>
                         <div>
-                            <h4 class="font-bold text-yellow-400 mb-2">Tidak Termasuk</h4>
-                            <p class="text-sm opacity-90">Perizinan yang hanya berlaku satu kali (bersifat transaksional),
-                                misalnya Izin Penerbangan bagi Pesawat, Pilot, Awak Kabin, atau Persetujuan Impor/Ekspor</p>
+                            <h4 class="font-bold text-yellow-400 mb-2">{{ __('messages.pbumku_exclusions_title') }}</h4>
+                            <p class="text-sm opacity-90">{{ __('messages.pbumku_exclusions_description') }}</p>
                         </div>
                     </div>
                 </div>
@@ -63,10 +60,10 @@
             <div class="max-w-6xl mx-auto" data-aos="fade-up" data-aos-duration="1000">
                 <div class="text-center mb-8">
                     <h3 class="text-2xl lg:text-3xl font-bold text-gray-800 dark:text-white mb-3">
-                        Cari Perizinan PB UMKU
+                        {{ __('messages.search_pbumku_title') }}
                     </h3>
                     <p class="text-gray-600 dark:text-gray-300">
-                        Temukan jenis perizinan yang sesuai dengan kebutuhan usaha Anda
+                        {{ __('messages.search_pbumku_description') }}
                     </p>
                 </div>
 
@@ -78,22 +75,22 @@
                             <div class="flex items-center space-x-3">
                                 <i class="fas fa-building text-blue-500"></i>
                                 <span class="text-left break-words max-w-full">
-                                    {{ $selectedDinas ? $dinas->find($selectedDinas)->nama ?? 'Semua Dinas' : 'Semua Dinas' }}
+                                    {{ $selectedDinas ? $dinas->find($selectedDinas)->nama ?? __('messages.all_dinas') : __('messages.all_dinas') }}
                                 </span>
                             </div>
                         </div>
                         <ul tabindex="0"
                             class="dropdown-content z-50 mt-2 p-2 shadow-2xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-box w-80 max-h-80 overflow-y-auto">
                             <li class="mb-1">
-                                <a href="{{ route('pbumku.index') }}"
+                                <a href="{{ LaravelLocalization::getLocalizedURL(null, route('pbumku.index')) }}"
                                     class="flex items-start space-x-3 px-4 py-3 rounded-lg {{ !$selectedDinas ? 'bg-blue-600 text-white' : 'hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300' }}">
                                     <i class="fas fa-layer-group w-5 mt-0.5 flex-shrink-0"></i>
-                                    <span class="break-words">Semua Dinas</span>
+                                    <span class="break-words">{{ __('messages.all_dinas') }}</span>
                                 </a>
                             </li>
                             @foreach ($dinas as $dina)
                                 <li class="mb-1">
-                                    <a href="{{ route('pbumku.index', ['dinas_id' => $dina->dinas_id]) }}"
+                                    <a href="{{ LaravelLocalization::getLocalizedURL(null, route('pbumku.index', ['dinas_id' => $dina->dinas_id])) }}"
                                         class="flex items-start space-x-3 px-4 py-3 rounded-lg {{ $selectedDinas == $dina->dinas_id ? 'bg-blue-600 text-white' : 'hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300' }}">
                                         <i class="fas fa-building w-5 mt-0.5 flex-shrink-0"></i>
                                         <span class="break-words text-left">{{ $dina->nama }}</span>
@@ -104,23 +101,23 @@
                     </div>
 
                     <!-- Search Form -->
-                    <form action="{{ route('pbumku.search') }}" method="GET" class="flex-1">
+                    <form action="{{ LaravelLocalization::getLocalizedURL(null, route('pbumku.search')) }}" method="GET" class="flex-1">
                         <div class="relative">
                             <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                                 <i class="fas fa-search text-gray-400"></i>
                             </div>
                             <input type="text" name="query" id="pbumku-search-input"
-                                placeholder="Cari PB UMKU berdasarkan nama..."
+                                placeholder="{{ __('messages.search_placeholder') }}"
                                 class="w-full pl-12 pr-4 py-4 text-base bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-2xl shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:text-white transition-all duration-300"
                                 value="{{ $query ?? '' }}" autocomplete="off"
-                                data-live-search-url="{{ route('pbumku.live-search') }}" />
+                                data-live-search-url="{{ LaravelLocalization::getLocalizedURL(null, route('pbumku.live-search')) }}" />
                             @if ($selectedDinas)
                                 <input type="hidden" name="dinas_id" id="dinas_id" value="{{ $selectedDinas }}">
                             @endif
 
                             <!-- Suggestions Dropdown -->
                             <div id="pbumku-suggestions"
-                                class="absolute z-50 w-full mt-2 text-white bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-xl hidden overflow-hidden">
+                                class="absolute z-50 w-full mt-2 dark:text-white bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-xl hidden overflow-hidden">
                                 <ul id="pbumku-suggestions-list" class="max-h-60 overflow-y-auto "></ul>
                             </div>
                         </div>
@@ -130,7 +127,7 @@
                     <button type="submit"
                         class="px-6 py-4 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold rounded-2xl shadow-lg transition-all duration-300 transform hover:scale-105 flex items-center space-x-2 justify-center">
                         <i class="fas fa-search"></i>
-                        <span>Cari</span>
+                        <span>{{ __('messages.search') }}</span>
                     </button>
                 </div>
 
@@ -139,19 +136,19 @@
                     <div class="flex flex-wrap gap-2">
                         <span class="text-sm text-gray-500 dark:text-gray-400 flex items-center">
                             <i class="fas fa-lightbulb text-yellow-500 mr-2"></i>
-                            Cari cepat:
+                            {{ __('messages.quick_search') }}
                         </span>
                         <button type="button" data-search="izin"
                             class="quick-search-btn text-xs bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded-full hover:bg-blue-200 dark:hover:bg-blue-700 transition-colors">
-                            Izin
+                            {{ __('messages.permit') }}
                         </button>
                         <button type="button" data-search="sertifikat"
                             class="quick-search-btn text-xs bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded-full hover:bg-blue-200 dark:hover:bg-blue-700 transition-colors">
-                            Sertifikat
+                            {{ __('messages.certificate') }}
                         </button>
                         <button type="button" data-search="rekomendasi"
                             class="quick-search-btn text-xs bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded-full hover:bg-blue-200 dark:hover:bg-blue-700 transition-colors">
-                            Rekomendasi
+                            {{ __('messages.recommendation') }}
                         </button>
                     </div>
                 </div>
@@ -169,19 +166,17 @@
                             class="w-24 h-24 mx-auto mb-6 bg-yellow-100 dark:bg-yellow-900 rounded-full flex items-center justify-center">
                             <i class="fas fa-search text-yellow-600 dark:text-yellow-400 text-3xl"></i>
                         </div>
-                        <h4 class="text-2xl font-bold text-gray-800 dark:text-white mb-3">Tidak Ditemukan</h4>
+                        <h4 class="text-2xl font-bold text-gray-800 dark:text-white mb-3">{{ __('messages.no_results') }}</h4>
                         <p class="text-gray-600 dark:text-gray-300 mb-6 max-w-md mx-auto">
-                            Tidak ditemukan hasil untuk pencarian
-                            <strong class="text-blue-600 dark:text-blue-400">"{{ $query ?? 'Semua' }}"</strong>
+                            {{ __('messages.no_results_description', ['query' => $query ?? __('messages.all')]) }}
                             @if ($selectedDinas)
-                                pada dinas <strong
-                                    class="text-blue-600 dark:text-blue-400">{{ $dinas->find($selectedDinas)->nama ?? '' }}</strong>
+                                {{ __('messages.for_dinas', ['dinas' => $dinas->find($selectedDinas)->nama ?? '']) }}
                             @endif
                         </p>
-                        <a href="{{ route('pbumku.index') }}"
+                        <a href="{{ LaravelLocalization::getLocalizedURL(null, route('pbumku.index')) }}"
                             class="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-2xl transition-colors inline-flex items-center space-x-2">
                             <i class="fas fa-refresh"></i>
-                            <span>Reset Pencarian</span>
+                            <span>{{ __('messages.reset_search') }}</span>
                         </a>
                     </div>
                 @else
@@ -189,25 +184,24 @@
                     <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-8" data-aos="fade-up">
                         <div>
                             <h3 class="text-2xl lg:text-3xl font-bold text-gray-800 dark:text-white mb-2">
-                                Hasil Pencarian
+                                {{ __('messages.results_found') }}
                             </h3>
                             <div class="flex items-center space-x-4 text-sm text-gray-600 dark:text-gray-300">
                                 <span
                                     class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded-full font-semibold">
-                                    {{ $pbumku->total() }} Hasil Ditemukan
+                                    {{ __('messages.results_count', ['count' => $pbumku->total()]) }}
                                 </span>
                                 @if ($selectedDinas)
                                     <span class="flex items-center space-x-2">
                                         <i class="fas fa-filter"></i>
-                                        <span>Dinas: {{ $dinas->find($selectedDinas)->nama ?? '' }}</span>
+                                        <span>{{ __('messages.dinas_filter', ['dinas' => $dinas->find($selectedDinas)->nama ?? '']) }}</span>
                                     </span>
                                 @endif
                             </div>
                         </div>
 
                         <div class="mt-4 lg:mt-0 flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400">
-                            <span>Menampilkan {{ $pbumku->firstItem() }} - {{ $pbumku->lastItem() }} dari
-                                {{ $pbumku->total() }}</span>
+                            <span>{{ __('messages.showing', ['first' => $pbumku->firstItem(), 'last' => $pbumku->lastItem(), 'total' => $pbumku->total()]) }}</span>
                         </div>
                     </div>
 
@@ -227,13 +221,13 @@
                                                 <h4 class="text-xl lg:text-2xl font-bold text-white">
                                                     {{ $item->nama }}
                                                 </h4>
-                                                <p class="text-blue-100 text-sm">
-                                                    Kode PB UMKU: {{ $item->pbumku_id }}
-                                                </p>
+                                                {{-- <p class="text-blue-100 text-sm">
+                                                    {{ __('messages.pbumku_code') }}: {{ $item->pbumku_id }}
+                                                </p> --}}
                                             </div>
                                         </div>
                                         <div class="bg-green-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
-                                            Tersedia
+                                            {{ __('messages.available') }}
                                         </div>
                                     </div>
                                 </div>
@@ -245,11 +239,10 @@
                                         <div>
                                             <h5 class="font-bold text-gray-800 dark:text-white mb-3 flex items-center">
                                                 <i class="fas fa-tags text-blue-500 mr-2"></i>
-                                                KBLI Terkait
+                                                {{ __('messages.related_kbli') }}
                                             </h5>
                                             @if ($item->kbli->isEmpty())
-                                                <p class="text-gray-500 dark:text-gray-400 text-sm">Tidak ada KBLI terkait
-                                                </p>
+                                                <p class="text-gray-500 dark:text-gray-400 text-sm">{{ __('messages.no_kbli') }}</p>
                                             @else
                                                 <div class="flex flex-wrap gap-2">
                                                     @foreach ($item->kbli as $kbli)
@@ -264,9 +257,9 @@
 
                                         <!-- Action Button -->
                                         <div class="flex items-center justify-end">
-                                            <a href="{{ route('pbumku.show', ['pbumku_id' => $item->pbumku_id]) }}"
+                                            <a href="{{ LaravelLocalization::getLocalizedURL(null, route('pbumku.show', ['pbumku_id' => $item->pbumku_id])) }}"
                                                 class="px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white rounded-xl transition-all duration-300 transform hover:scale-105 flex items-center space-x-2 group">
-                                                <span>Lihat Detail</span>
+                                                <span>{{ __('messages.view_details') }}</span>
                                                 <i
                                                     class="fas fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
                                             </a>
@@ -282,10 +275,10 @@
                         <div class="mt-12 flex justify-center" data-aos="fade-up">
                             <div class="join shadow-lg">
                                 <!-- Previous Button -->
-                                <a href="{{ $pbumku->previousPageUrl() ? $pbumku->appends(['dinas_id' => $selectedDinas, 'query' => $query])->previousPageUrl() : '#' }}"
+                                <a href="{{ $pbumku->previousPageUrl() ? LaravelLocalization::getLocalizedURL(null, $pbumku->appends(['dinas_id' => $selectedDinas, 'query' => $query])->previousPageUrl()) : '#' }}"
                                     class="join-item btn btn-outline btn-primary {{ $pbumku->onFirstPage() ? 'btn-disabled' : '' }} flex items-center space-x-2">
                                     <i class="fas fa-chevron-left"></i>
-                                    <span>Previous</span>
+                                    <span>{{ __('messages.previous') }}</span>
                                 </a>
 
                                 <!-- Page Numbers -->
@@ -298,8 +291,8 @@
                                 @endphp
 
                                 @if ($start > 1)
-                                    <a href="{{ $pbumku->appends(['dinas_id' => $selectedDinas, 'query' => $query])->url(1) }}"
-                                        class="join-item btn btn-outline btn-primary {{ $currentPage == 1 ? 'btn-active' : '' }}">
+                                    <a href="{{ LaravelLocalization::getLocalizedURL(null, $pbumku->appends(['dinas_id' => $selectedDinas, 'query' => $query])->url(1)) }}"
+                                        class="join-item btn btn-outline btn-primary {{ $currentPage == 1 ? 'btn-active !bg-blue-600 !text-white !border-blue-600' : '' }}">
                                         1
                                     </a>
                                     @if ($start > 2)
@@ -308,7 +301,7 @@
                                 @endif
 
                                 @for ($i = $start; $i <= $end; $i++)
-                                    <a href="{{ $pbumku->appends(['dinas_id' => $selectedDinas, 'query' => $query])->url($i) }}"
+                                    <a href="{{ LaravelLocalization::getLocalizedURL(null, $pbumku->appends(['dinas_id' => $selectedDinas, 'query' => $query])->url($i)) }}"
                                         class="join-item btn btn-outline btn-primary {{ $currentPage == $i ? 'btn-active !bg-blue-600 !text-white !border-blue-600' : '' }}">
                                         {{ $i }}
                                     </a>
@@ -318,16 +311,16 @@
                                     @if ($end < $lastPage - 1)
                                         <button class="join-item btn btn-outline btn-primary btn-disabled">...</button>
                                     @endif
-                                    <a href="{{ $pbumku->appends(['dinas_id' => $selectedDinas, 'query' => $query])->url($lastPage) }}"
+                                    <a href="{{ LaravelLocalization::getLocalizedURL(null, $pbumku->appends(['dinas_id' => $selectedDinas, 'query' => $query])->url($lastPage)) }}"
                                         class="join-item btn btn-outline btn-primary {{ $currentPage == $lastPage ? 'btn-active' : '' }}">
                                         {{ $lastPage }}
                                     </a>
                                 @endif
 
                                 <!-- Next Button -->
-                                <a href="{{ $pbumku->nextPageUrl() ? $pbumku->appends(['dinas_id' => $selectedDinas, 'query' => $query])->nextPageUrl() : '#' }}"
+                                <a href="{{ $pbumku->nextPageUrl() ? LaravelLocalization::getLocalizedURL(null, $pbumku->appends(['dinas_id' => $selectedDinas, 'query' => $query])->nextPageUrl()) : '#' }}"
                                     class="join-item btn btn-outline btn-primary {{ $pbumku->hasMorePages() ? '' : 'btn-disabled' }} flex items-center space-x-2">
-                                    <span>Next</span>
+                                    <span>{{ __('messages.next') }}</span>
                                     <i class="fas fa-chevron-right"></i>
                                 </a>
                             </div>
@@ -337,9 +330,15 @@
             </div>
         </div>
     </section>
+
+    <!-- URL template untuk JavaScript -->
+    {{-- <script>
+        window.pbumkuShowUrl = '{{ LaravelLocalization::getLocalizedURL(null, route('pbumku.show', ['pbumku_id' => ':pbumku_id'])) }}';
+        window.translations = {
+            no_description: '{{ __('messages.no_description') }}',
+        };
+    </script> --}}
 @endsection
-
-
 
 {{-- @push('scripts')
     <script>
@@ -348,8 +347,7 @@
             button.addEventListener('click', function() {
                 const searchTerm = this.getAttribute('data-search');
                 document.getElementById('pbumku-search-input').value = searchTerm;
-                // Find the form and submit it
-                const form = document.querySelector('form[action*="pbumku.search"]');
+                const form = document.querySelector('form[action*="{{ route('pbumku.search') }}"]');
                 if (form) form.submit();
             });
         });
@@ -361,7 +359,6 @@
             dropdowns.forEach(dropdown => {
                 const button = dropdown.querySelector('[tabindex="0"]');
                 const menu = dropdown.querySelector('.dropdown-content');
-                const chevron = dropdown.querySelector('.fa-chevron-down');
 
                 if (button && menu) {
                     button.addEventListener('click', function(e) {
@@ -378,17 +375,7 @@
                         });
 
                         // Toggle current dropdown
-                        if (isOpen) {
-                            menu.classList.add('hidden');
-                            if (chevron) {
-                                chevron.style.transform = 'rotate(0deg)';
-                            }
-                        } else {
-                            menu.classList.remove('hidden');
-                            if (chevron) {
-                                chevron.style.transform = 'rotate(180deg)';
-                            }
-                        }
+                        menu.classList.toggle('hidden');
                     });
                 }
             });
@@ -399,9 +386,6 @@
                     document.querySelectorAll('.dropdown-content').forEach(menu => {
                         menu.classList.add('hidden');
                     });
-                    document.querySelectorAll('.fa-chevron-down').forEach(chevron => {
-                        chevron.style.transform = 'rotate(0deg)';
-                    });
                 }
             });
 
@@ -411,7 +395,7 @@
             const suggestionsList = document.getElementById('pbumku-suggestions-list');
 
             if (searchInput) {
-                searchInput.addEventListener('input', function() {
+                searchInput.addEventListener('input', async function() {
                     const query = this.value.trim();
 
                     if (query.length < 2) {
@@ -419,36 +403,38 @@
                         return;
                     }
 
-                    showLoadingSuggestions();
+                    suggestionsList.innerHTML =
+                        '<li class="px-4 py-3 text-gray-500 dark:text-gray-400"><i class="fas fa-spinner fa-spin mr-2"></i>{{ __('messages.searching') }}</li>';
+                    suggestions.classList.remove('hidden');
 
-                    // Simulate API call
-                    setTimeout(() => {
-                        const mockSuggestions = [{
-                                name: 'Izin Usaha Mikro dan Kecil',
-                                type: 'Izin'
-                            },
-                            {
-                                name: 'Sertifikat Standar Nasional Indonesia',
-                                type: 'Sertifikat'
-                            },
-                            {
-                                name: 'Rekomendasi Teknis',
-                                type: 'Rekomendasi'
-                            },
-                            {
-                                name: 'Izin Lingkungan',
-                                type: 'Izin'
-                            },
-                            {
-                                name: 'Sertifikat Laik Operasi',
-                                type: 'Sertifikat'
-                            }
-                        ].filter(item =>
-                            item.name.toLowerCase().includes(query.toLowerCase())
-                        );
+                    try {
+                        const response = await fetch(`${searchInput.dataset.liveSearchUrl}?query=${encodeURIComponent(query)}`);
+                        const suggestionsData = await response.json();
 
-                        displaySuggestions(mockSuggestions);
-                    }, 300);
+                        if (suggestionsData.length === 0) {
+                            suggestionsList.innerHTML =
+                                '<li class="px-4 py-3 text-gray-500 dark:text-gray-400">{{ __('messages.no_suggestions') }}</li>';
+                        } else {
+                            suggestionsList.innerHTML = suggestionsData.map(item => `
+                                <li class="px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer border-b border-gray-100 dark:border-gray-700 last:border-b-0 transition-colors">
+                                    <div class="font-semibold text-blue-600 dark:text-blue-400">${item.name}</div>
+                                    <div class="text-xs text-gray-500 dark:text-gray-400">${item.type || '{{ __('messages.no_description') }}'}</div>
+                                </li>
+                            `).join('');
+
+                            suggestionsList.querySelectorAll('li').forEach((li, index) => {
+                                li.addEventListener('click', function() {
+                                    const url = window.pbumkuShowUrl.replace(':pbumku_id', suggestionsData[index].id);
+                                    window.location.href = url;
+                                });
+                            });
+                        }
+                        suggestions.classList.remove('hidden');
+                    } catch (error) {
+                        suggestionsList.innerHTML =
+                            '<li class="px-4 py-3 text-red-500 dark:text-red-400">{{ __('messages.search_error') }}</li>';
+                        suggestions.classList.remove('hidden');
+                    }
                 });
 
                 // Hide suggestions when clicking outside
@@ -457,36 +443,6 @@
                         suggestions.classList.add('hidden');
                     }
                 });
-            }
-
-            function showLoadingSuggestions() {
-                suggestionsList.innerHTML =
-                    '<li class="px-4 py-3 text-gray-500 dark:text-gray-400"><i class="fas fa-spinner fa-spin mr-2"></i>Mencari...</li>';
-                suggestions.classList.remove('hidden');
-            }
-
-            function displaySuggestions(suggestionsData) {
-                if (suggestionsData.length === 0) {
-                    suggestionsList.innerHTML =
-                        '<li class="px-4 py-3 text-gray-500 dark:text-gray-400">Tidak ada saran</li>';
-                } else {
-                    suggestionsList.innerHTML = suggestionsData.map(item => `
-                    <li class="px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer border-b border-gray-100 dark:border-gray-700 last:border-b-0 transition-colors">
-                        <div class="font-semibold text-blue-600 dark:text-blue-400">${item.name}</div>
-                        <div class="text-xs text-gray-500 dark:text-gray-400">${item.type}</div>
-                    </li>
-                `).join('');
-
-                    // Add click event to suggestions
-                    suggestionsList.querySelectorAll('li').forEach((li, index) => {
-                        li.addEventListener('click', function() {
-                            searchInput.value = suggestionsData[index].name;
-                            suggestions.classList.add('hidden');
-                            document.querySelector('form').submit();
-                        });
-                    });
-                }
-                suggestions.classList.remove('hidden');
             }
         });
     </script>

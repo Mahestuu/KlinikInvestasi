@@ -82,6 +82,7 @@ class PersyaratanPbumkusTable
                         }
                     })
                     ->modalHeading('Ubah Persyaratan Pbumku')
+                    ->successNotificationTitle('Data berhasil disimpan')
                     ->modalSubmitActionLabel('Simpan')
                     ->modalCancelActionLabel('Batal')
                     ->modalWidth('8xl'),
@@ -96,11 +97,16 @@ class PersyaratanPbumkusTable
                     ->modalCancelActionLabel('Batal')
                     ->action(function (PersyaratanPbumku $record): void {
                         $record->delete();
-                    }),
+                    })
+                    ->successNotificationTitle('Data berhasil dihapus'),
+
             ])
             ->bulkActions([
                 BulkActionGroup::make([
-                    DeleteBulkAction::make()->label('Hapus Massal'),
+                    DeleteBulkAction::make()
+                        ->label('Hapus Massal')
+                        ->successNotificationTitle('Data berhasil dihapus'),
+
                 ]),
             ])
             ->toolbarActions([
@@ -119,6 +125,7 @@ class PersyaratanPbumkusTable
                             }
                         }
                     })
+                    ->successNotificationTitle('Data berhasil disimpan')
                     ->modalHeading('Tambah Persyaratan Perizinan PBUMKU')
                     ->modalSubmitActionLabel('Simpan')
                     ->modalCancelActionLabel('Batal')

@@ -1,6 +1,6 @@
 @extends('utama.app')
 
-@section('title', 'Klinik Investasi Surabaya - KBLI')
+@section('title', __('messages.kbli_title_top'))
 
 @section('content')
     <!-- HERO SECTION -->
@@ -17,15 +17,13 @@
         </div>
 
         <div class="relative z-10 mx-auto px-5 xl:px-28 text-white" data-aos="fade-down" data-aos-duration="1000">
-            <div class="max-w-4xl">
+            <div class="max-w-8xl">
                 <h2
                     class="text-3xl lg:text-5xl font-bold mb-6 bg-gradient-to-r from-white to-blue-100 bg-clip-text text-transparent">
-                    Klasifikasi Baku Lapangan Usaha Indonesia
+                    {{ __('messages.kbli_title') }}
                 </h2>
                 <p class="text-lg lg:text-xl mb-8 opacity-90 leading-relaxed">
-                    Sistem pengelompokan aktivitas ekonomi yang menghasilkan barang atau jasa di Indonesia,
-                    disusun oleh Badan Pusat Statistik (BPS) untuk menyamakan standar definisi, data statistik,
-                    dan memudahkan pelaku usaha menentukan jenis bisnis Anda
+                    {{ __('messages.kbli_description') }}
                 </p>
 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
@@ -34,9 +32,8 @@
                             <i class="fas fa-business-time text-white text-lg"></i>
                         </div>
                         <div>
-                            <h4 class="font-bold text-yellow-400 mb-2">Panduan Bisnis</h4>
-                            <p class="text-sm opacity-90">Membantu pelaku usaha dalam menentukan kategori bidang usaha yang
-                                akan dijalankan</p>
+                            <h4 class="font-bold text-yellow-400 mb-2">{{ __('messages.kbli_guide_title') }}</h4>
+                            <p class="text-sm opacity-90">{{ __('messages.kbli_guide_description') }}</p>
                         </div>
                     </div>
 
@@ -45,9 +42,8 @@
                             <i class="fas fa-file-contract text-white text-lg"></i>
                         </div>
                         <div>
-                            <h4 class="font-bold text-green-400 mb-2">Perizinan Berusaha</h4>
-                            <p class="text-sm opacity-90">Menjadi acuan dalam menentukan jenis dan syarat perizinan di
-                                sistem OSS</p>
+                            <h4 class="font-bold text-green-400 mb-2">{{ __('messages.kbli_permit_title') }}</h4>
+                            <p class="text-sm opacity-90">{{ __('messages.kbli_permit_description') }}</p>
                         </div>
                     </div>
 
@@ -56,9 +52,8 @@
                             <i class="fas fa-chart-line text-white text-lg"></i>
                         </div>
                         <div>
-                            <h4 class="font-bold text-blue-400 mb-2">Perencanaan Ekonomi</h4>
-                            <p class="text-sm opacity-90">Memberikan informasi bagi pemerintah untuk memantau dan
-                                merencanakan kebijakan ekonomi</p>
+                            <h4 class="font-bold text-blue-400 mb-2">{{ __('messages.kbli_planning_title') }}</h4>
+                            <p class="text-sm opacity-90">{{ __('messages.kbli_planning_description') }}</p>
                         </div>
                     </div>
                 </div>
@@ -75,25 +70,25 @@
             <div class="max-w-4xl mx-auto" data-aos="fade-up" data-aos-duration="1000">
                 <div class="text-center mb-8">
                     <h3 class="text-2xl lg:text-3xl font-bold text-gray-800 dark:text-white mb-3">
-                        Temukan Kode KBLI Anda
+                        {{ __('messages.search_kbli_title') }}
                     </h3>
                     <p class="text-gray-600 dark:text-gray-300">
-                        Cari klasifikasi usaha Anda dengan mudah dan cepat
+                        {{ __('messages.search_kbli_description') }}
                     </p>
                 </div>
 
                 <!-- Search Form -->
-                <form action="{{ route('kbli.search') }}" method="GET" class="relative">
+                <form action="{{ LaravelLocalization::getLocalizedURL(null, route('kbli.search')) }}" method="GET" class="relative">
                     <div class="flex flex-col sm:flex-row gap-4">
                         <div class="relative flex-1">
                             <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                                 <i class="fas fa-search text-gray-400"></i>
                             </div>
                             <input type="text" name="query" id="search-input"
-                                placeholder="Ketik nama usaha atau kode KBLI... (Contoh: restoran, 47112, dll)"
+                                placeholder="{{ __('messages.search_kbli_placeholder') }}"
                                 class="w-full pl-12 pr-4 py-4 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-2xl shadow-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:text-white transition-all duration-300"
-                                value="{{ $query ?? '' }}" autocomplete="off" />
-
+                                value="{{ $query ?? '' }}" autocomplete="off"
+                                data-live-search-url="{{ LaravelLocalization::getLocalizedURL(null, route('kbli.live-search')) }}" />
                             <!-- Suggestions Dropdown -->
                             <div id="suggestions"
                                 class="absolute z-50 w-full mt-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-xl hidden overflow-hidden">
@@ -103,7 +98,7 @@
                         <button type="submit"
                             class="px-8 py-4 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold rounded-2xl shadow-lg transition-all duration-300 transform hover:scale-105 flex justify-center items-center space-x-2">
                             <i class="fas fa-search"></i>
-                            <span>Cari KBLI</span>
+                            <span>{{ __('messages.search_kbli') }}</span>
                         </button>
                     </div>
                 </form>
@@ -112,41 +107,41 @@
                 <div class="mt-6 flex flex-wrap gap-3 justify-center">
                     <span class="text-sm text-gray-500 dark:text-gray-400 flex items-center">
                         <i class="fas fa-lightbulb text-yellow-500 mr-2"></i>
-                        Tips pencarian:
+                        {{ __('messages.search_tips') }}
                     </span>
-                    <button type="button" data-search="restoran"
+                    <button type="button" data-search="{{ __('messages.kbli_restoran') }}"
                         class="quick-search-btn text-xs bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded-full hover:bg-blue-200 dark:hover:bg-blue-700 transition-colors">
-                        restoran
+                        {{ __('messages.kbli_restoran') }}
                     </button>
-                    <button type="button" data-search="jasa"
+                    <button type="button" data-search="{{ __('messages.kbli_jasa') }}"
                         class="quick-search-btn text-xs bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded-full hover:bg-blue-200 dark:hover:bg-blue-700 transition-colors">
-                        jasa
+                        {{ __('messages.kbli_jasa') }}
                     </button>
-                    <button type="button" data-search="retail"
+                    <button type="button" data-search="{{ __('messages.kbli_retail') }}"
                         class="quick-search-btn text-xs bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded-full hover:bg-blue-200 dark:hover:bg-blue-700 transition-colors">
-                        retail
+                        {{ __('messages.kbli_retail') }}
                     </button>
-                    <button type="button" data-search="manufaktur"
+                    <button type="button" data-search="{{ __('messages.kbli_manufaktur') }}"
                         class="quick-search-btn text-xs bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded-full hover:bg-blue-200 dark:hover:bg-blue-700 transition-colors">
-                        manufaktur
+                        {{ __('messages.kbli_manufaktur') }}
                     </button>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- RESULTS SECTION - IMPROVED -->
+    <!-- RESULTS SECTION -->
     @if (isset($kbli))
         <section class="py-8 lg:py-16 bg-white dark:bg-gray-900">
             <div class="mx-auto px-5 xl:px-28">
                 <div id="results" class="max-w-6xl mx-auto" data-aos="fade-up" data-aos-duration="1000">
                     <div class="flex items-center justify-between mb-8">
                         <h3 class="text-2xl lg:text-3xl font-bold text-gray-800 dark:text-white">
-                            Hasil Pencarian
+                            {{ __('messages.results_found') }}
                         </h3>
                         <div
                             class="bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 px-4 py-2 rounded-full font-semibold">
-                            Ditemukan {{ $kbli->count() }} hasil
+                            {{ __('messages.results_count', ['count' => $kbli->count()]) }}
                         </div>
                     </div>
 
@@ -157,13 +152,9 @@
                                 class="w-16 h-16 bg-yellow-100 dark:bg-yellow-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
                                 <i class="fas fa-exclamation-triangle text-yellow-600 dark:text-yellow-400 text-2xl"></i>
                             </div>
-                            <h4 class="text-xl font-bold text-yellow-800 dark:text-yellow-300 mb-2">Tidak Ditemukan</h4>
+                            <h4 class="text-xl font-bold text-yellow-800 dark:text-yellow-300 mb-2">{{ __('messages.no_results') }}</h4>
                             <p class="text-yellow-700 dark:text-yellow-400">
-                                Tidak ditemukan hasil untuk kata kunci: <strong
-                                    class="text-yellow-800 dark:text-yellow-200">"{{ $query }}"</strong>
-                            </p>
-                            <p class="text-sm text-yellow-600 dark:text-yellow-500 mt-2">
-                                Coba gunakan kata kunci yang lebih umum atau periksa pengejaan
+                                {{ __('messages.no_results_description', ['query' => $query]) }}
                             </p>
                         </div>
                     @else
@@ -176,7 +167,7 @@
                                         <div class="flex items-start justify-between mb-4">
                                             <div
                                                 class="bg-blue-100 dark:bg-blue-900/40 text-blue-800 dark:text-blue-300 px-3 py-1 rounded-full text-sm font-bold">
-                                                Kode: {{ $item->kode }}
+                                                {{ __('messages.kbli_code') }}: {{ $item->kode }}
                                             </div>
                                             <div
                                                 class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
@@ -192,27 +183,27 @@
                                         <div class="space-y-3 mb-6">
                                             <div class="flex items-center text-sm text-gray-600 dark:text-gray-300">
                                                 <i class="fas fa-tag text-blue-500 mr-3 w-4"></i>
-                                                <span><strong>Kategori:</strong>
-                                                    {{ $item->kategoriKbli->nama ?? 'Tidak Ada Kategori' }}</span>
+                                                <span><strong>{{ __('messages.kbli_category') }}:</strong>
+                                                    {{ $item->kategoriKbli->nama ?? __('messages.no_category') }}</span>
                                             </div>
                                             <div class="flex items-start text-sm text-gray-600 dark:text-gray-300">
                                                 <i class="fas fa-scroll text-green-500 mr-3 w-4 mt-1"></i>
-                                                <span><strong>Ruang Lingkup:</strong>
-                                                    {{ Str::limit($item->ruang_lingkup ?? 'Tidak Ada Deskripsi', 120) }}</span>
+                                                <span><strong>{{ __('messages.kbli_scope') }}:</strong>
+                                                    {{ \Illuminate\Support\Str::limit($item->ruang_lingkup ?? __('messages.no_scope'), 120) }}</span>
                                             </div>
                                             <div class="flex items-center text-sm text-gray-600 dark:text-gray-300">
                                                 <i class="fas fa-building text-purple-500 mr-3 w-4"></i>
-                                                <span><strong>Dinas:</strong>
-                                                    {{ $item->dinas->nama ?? 'Tidak Ada Dinas' }}</span>
+                                                <span><strong>{{ __('messages.kbli_dinas') }}:</strong>
+                                                    {{ $item->dinas->nama ?? __('messages.no_dinas') }}</span>
                                             </div>
                                         </div>
 
                                         <!-- Action Button -->
                                         <div class="card-actions">
-                                            <a href="{{ route('kbli.show', $item->kbli_id) }}"
+                                            <a href="{{ LaravelLocalization::getLocalizedURL(null, route('kbli.show', $item->kbli_id)) }}"
                                                 class="btn btn-primary btn-outline w-full group-hover:bg-blue-600 group-hover:text-white group-hover:border-blue-600 transition-all duration-300">
                                                 <i class="fas fa-eye mr-2"></i>
-                                                Lihat Detail Lengkap
+                                                {{ __('messages.view_details') }}
                                             </a>
                                         </div>
                                     </div>
@@ -231,10 +222,10 @@
             <div class="max-w-6xl mx-auto">
                 <div class="text-center mb-12" data-aos="fade-up">
                     <h3 class="text-3xl lg:text-4xl font-bold text-gray-800 dark:text-white mb-4">
-                        📚 Semua KBLI per Dinas
+                        📚 {{ __('messages.all_kbli') }}
                     </h3>
                     <p class="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-                        Jelajahi seluruh klasifikasi usaha berdasarkan dinas terkait di Kota Surabaya
+                        {{ __('messages.all_kbli_description') }}
                     </p>
                 </div>
 
@@ -254,7 +245,7 @@
                                             {{ $dinasItem->nama }}
                                         </h4>
                                         <p class="text-gray-600 dark:text-gray-300 text-sm font-normal">
-                                            {{ $dinasItem->kbli->count() }} Klasifikasi Usaha
+                                            {{ __('messages.kbli_count', ['count' => $dinasItem->kbli->count()]) }}
                                         </p>
                                     </div>
                                 </div>
@@ -271,16 +262,16 @@
                                                         {{ $kbli->kode }}
                                                     </span>
                                                     <span class=" text-gray-500 dark:text-gray-400 lg:text-sm">
-                                                        {{ $kbli->kategoriKbli->nama ?? 'Umum' }}
+                                                        {{ $kbli->kategoriKbli->nama ?? __('messages.no_category') }}
                                                     </span>
                                                 </div>
                                                 <p class="text-gray-800 dark:text-gray-200 font-medium lg:text-lg">
                                                     {{ $kbli->nama }}
                                                 </p>
                                             </div>
-                                            <a href="{{ route('kbli.show', $kbli->kbli_id) }}"
+                                            <a href="{{ LaravelLocalization::getLocalizedURL(null, route('kbli.show', $kbli->kbli_id)) }}"
                                                 class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors text-sm flex items-center space-x-2">
-                                                <span>Detail</span>
+                                                <span>{{ __('messages.kbli_detail') }}</span>
                                                 <i class="fas fa-external-link-alt text-xs"></i>
                                             </a>
                                         </div>
@@ -293,33 +284,39 @@
             </div>
         </div>
     </section>
+
+    <!-- URL template untuk JavaScript -->
+    <script>
+        window.kbliShowUrl = '{{ LaravelLocalization::getLocalizedURL(null, route('kbli.show', ['kbli_id' => ':kbli_id'])) }}';
+        window.translations = {
+            no_description: '{{ __('messages.no_scope') }}',
+            searching: '{{ __('messages.searching') }}',
+            no_suggestions: '{{ __('messages.no_suggestions') }}',
+            search_error: '{{ __('messages.search_error') }}',
+        };
+    </script>
 @endsection
 
-{{-- @push('scripts')
+@push('scripts')
     <script>
         // Quick search functionality
         document.querySelectorAll('.quick-search-btn').forEach(button => {
             button.addEventListener('click', function() {
                 const searchTerm = this.getAttribute('data-search');
                 document.getElementById('search-input').value = searchTerm;
-                document.querySelector('form').submit();
+                const form = document.querySelector('form[action*="{{ route('kbli.search') }}"]');
+                if (form) form.submit();
             });
         });
 
-        // Clear search functionality
-        function clearSearch() {
-            document.getElementById('search-input').value = '';
-            window.location.href = "{{ route('kbli.index') }}";
-        }
-
-        // Enhanced search suggestions
+        // Live search functionality
         document.addEventListener('DOMContentLoaded', function() {
             const searchInput = document.getElementById('search-input');
             const suggestions = document.getElementById('suggestions');
             const suggestionsList = document.getElementById('suggestions-list');
 
             if (searchInput) {
-                searchInput.addEventListener('input', function() {
+                searchInput.addEventListener('input', async function() {
                     const query = this.value.trim();
 
                     if (query.length < 2) {
@@ -327,39 +324,40 @@
                         return;
                     }
 
-                    // Simulate API call - in real implementation, this would be an AJAX call
-                    showLoadingSuggestions();
+                    suggestionsList.innerHTML =
+                        '<li class="px-4 py-3 text-gray-500 dark:text-gray-400"><i class="fas fa-spinner fa-spin mr-2"></i>' +
+                        window.translations.searching + '</li>';
+                    suggestions.classList.remove('hidden');
 
-                    // For demo purposes, we'll simulate a delay
-                    setTimeout(() => {
-                        // This would be replaced with actual API response
-                        const mockSuggestions = [{
-                                code: '47112',
-                                name: 'Perdagangan Eceran Berbagai Macam Barang'
-                            },
-                            {
-                                code: '56101',
-                                name: 'Restoran dan Rumah Makan'
-                            },
-                            {
-                                code: '62011',
-                                name: 'Kegiatan Pemrograman Komputer'
-                            },
-                            {
-                                code: '68110',
-                                name: 'Real Estat'
-                            },
-                            {
-                                code: '86901',
-                                name: 'Rumah Sakit'
-                            }
-                        ].filter(item =>
-                            item.name.toLowerCase().includes(query.toLowerCase()) ||
-                            item.code.includes(query)
-                        );
+                    try {
+                        const response = await fetch(`${searchInput.dataset.liveSearchUrl}?query=${encodeURIComponent(query)}`);
+                        const suggestionsData = await response.json();
 
-                        displaySuggestions(mockSuggestions);
-                    }, 300);
+                        if (suggestionsData.length === 0) {
+                            suggestionsList.innerHTML =
+                                '<li class="px-4 py-3 text-gray-500 dark:text-gray-400">' + window.translations.no_suggestions +
+                                '</li>';
+                        } else {
+                            suggestionsList.innerHTML = suggestionsData.map(item => `
+                                <li class="px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer border-b border-gray-100 dark:border-gray-700 last:border-b-0 transition-colors">
+                                    <div class="font-semibold text-blue-600 dark:text-blue-400">${item.kode} - ${item.name}</div>
+                                    <div class="text-xs text-gray-500 dark:text-gray-400">${item.scope || window.translations.no_description}</div>
+                                </li>
+                            `).join('');
+
+                            suggestionsList.querySelectorAll('li').forEach((li, index) => {
+                                li.addEventListener('click', function() {
+                                    const url = window.kbliShowUrl.replace(':kbli_id', suggestionsData[index].id);
+                                    window.location.href = url;
+                                });
+                            });
+                        }
+                        suggestions.classList.remove('hidden');
+                    } catch (error) {
+                        suggestionsList.innerHTML =
+                            '<li class="px-4 py-3 text-red-500 dark:text-red-400">' + window.translations.search_error + '</li>';
+                        suggestions.classList.remove('hidden');
+                    }
                 });
 
                 // Hide suggestions when clicking outside
@@ -369,50 +367,6 @@
                     }
                 });
             }
-
-            function showLoadingSuggestions() {
-                suggestionsList.innerHTML =
-                    '<li class="px-4 py-3 text-gray-500 dark:text-gray-400"><i class="fas fa-spinner fa-spin mr-2"></i>Mencari...</li>';
-                suggestions.classList.remove('hidden');
-            }
-
-            function displaySuggestions(suggestionsData) {
-                if (suggestionsData.length === 0) {
-                    suggestionsList.innerHTML =
-                        '<li class="px-4 py-3 text-gray-500 dark:text-gray-400">Tidak ada saran</li>';
-                } else {
-                    suggestionsList.innerHTML = suggestionsData.map(item => `
-                    <li class="px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer border-b border-gray-100 dark:border-gray-700 last:border-b-0 transition-colors">
-                        <div class="font-semibold text-blue-600 dark:text-blue-400">${item.code}</div>
-                        <div class="text-sm text-gray-600 dark:text-gray-300">${item.name}</div>
-                    </li>
-                `).join('');
-
-                    // Add click event to suggestions
-                    suggestionsList.querySelectorAll('li').forEach((li, index) => {
-                        li.addEventListener('click', function() {
-                            searchInput.value = suggestionsData[index].name;
-                            suggestions.classList.add('hidden');
-                            document.querySelector('form').submit();
-                        });
-                    });
-                }
-                suggestions.classList.remove('hidden');
-            }
-        });
-
-        // Smooth scrolling for page anchors
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
         });
     </script>
-@endpush --}}
+@endpush

@@ -5,12 +5,12 @@ namespace App\Filament\Resources\PersyaratanPerizinans\Tables;
 use App\Filament\Resources\PersyaratanPerizinans\Schemas\PersyaratanPerizinanForm;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
-use Filament\Actions\EditAction;
+use Filament\Actions\Action;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Filament\Actions\Action;
 use App\Models\PersyaratanPerizinan;
 use Illuminate\Database\Eloquent\Builder;
+
 
 
 class PersyaratanPerizinansTable
@@ -18,7 +18,7 @@ class PersyaratanPerizinansTable
     public static function configure(Table $table): Table
     {
         return $table
-            ->defaultSort('kbli_id') // Pastikan pengurutan berdasarkan kbli_id
+            ->defaultSort('kbli_id')
             ->columns([
                 TextColumn::make('kbli_row_number')
                     ->label('No')
@@ -64,6 +64,12 @@ class PersyaratanPerizinansTable
                     ->label('Jumlah Sub Persyaratan')
                     ->counts('subpoin')
                     ->sortable(),
+                TextColumn::make('sub_poin_details_count')
+                    ->label('Jumlah Turunan')
+                    ->getStateUsing(function ($record) {
+                        return $record->subpoin->sum(fn($subpoin) => $subpoin->details->count());
+                    })
+                    ->sortable(),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -72,6 +78,7 @@ class PersyaratanPerizinansTable
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
+
             ])
             ->filters([
                 //
@@ -86,11 +93,15 @@ class PersyaratanPerizinansTable
                         return [
                             'kbli_id' => $record->kbli_id,
                             'persyaratan' => PersyaratanPerizinan::where('kbli_id', $record->kbli_id)
+                                ->with('subpoin.details')
                                 ->get()
                                 ->map(fn($persyaratan) => [
                                     'nama' => $persyaratan->nama,
                                     'subpoin' => $persyaratan->subpoin->map(fn($subpoin) => [
                                         'item' => $subpoin->item,
+                                        'details' => $subpoin->details->map(fn($detail) => [
+                                            'text' => $detail->text,
+                                        ])->toArray(),
                                     ])->toArray(),
                                 ])->toArray(),
                         ];
@@ -103,11 +114,21 @@ class PersyaratanPerizinansTable
                                 'kbli_id' => $kbliId,
                                 'nama' => $persyaratanData['nama'],
                             ]);
-                            foreach ($persyaratanData['subpoin'] as $subpoin) {
-                                $persyaratan->subpoin()->create(['item' => $subpoin['item']]);
+                            foreach ($persyaratanData['subpoin'] as $subpoinData) {
+                                $subpoin = $persyaratan->subpoin()->create([
+                                    'item' => $subpoinData['item'],
+                                ]);
+                                if (!empty($subpoinData['details'])) {
+                                    foreach ($subpoinData['details'] as $detail) {
+                                        $subpoin->details()->create([
+                                            'text' => $detail['text'],
+                                        ]);
+                                    }
+                                }
                             }
                         }
                     })
+                    ->successNotificationTitle('Data berhasil disimpan')
                     ->modalHeading('Ubah Persyaratan')
                     ->modalSubmitActionLabel('Simpan')
                     ->modalCancelActionLabel('Batal')
@@ -115,7 +136,7 @@ class PersyaratanPerizinansTable
                 Action::make('delete_persyaratan')
                     ->label('Hapus')
                     ->icon('heroicon-o-trash')
-                    ->color('danger') // Warna merah
+                    ->color('danger')
                     ->requiresConfirmation()
                     ->modalHeading('Konfirmasi Hapus')
                     ->modalDescription('Apakah Anda yakin ingin menghapus persyaratan ini?')
@@ -123,11 +144,16 @@ class PersyaratanPerizinansTable
                     ->modalCancelActionLabel('Batal')
                     ->action(function (PersyaratanPerizinan $record): void {
                         $record->delete();
-                    }),
+                    })
+                    ->successNotificationTitle('Data berhasil dihapus'),
+
             ])
             ->bulkActions([
                 BulkActionGroup::make([
-                    DeleteBulkAction::make()->label('Hapus Massal'),
+                    DeleteBulkAction::make()
+                        ->label('Hapus Massal')
+                        ->successNotificationTitle('Data berhasil dihapus'),
+
                 ]),
             ])
             ->toolbarActions([
@@ -141,11 +167,21 @@ class PersyaratanPerizinansTable
                                 'kbli_id' => $data['kbli_id'],
                                 'nama' => $persyaratanData['nama'],
                             ]);
-                            foreach ($persyaratanData['subpoin'] as $subpoin) {
-                                $persyaratan->subpoin()->create(['item' => $subpoin['item']]);
+                            foreach ($persyaratanData['subpoin'] as $subpoinData) {
+                                $subpoin = $persyaratan->subpoin()->create([
+                                    'item' => $subpoinData['item'],
+                                ]);
+                                if (!empty($subpoinData['details'])) {
+                                    foreach ($subpoinData['details'] as $detail) {
+                                        $subpoin->details()->create([
+                                            'text' => $detail['text'],
+                                        ]);
+                                    }
+                                }
                             }
                         }
                     })
+                    ->successNotificationTitle('Data berhasil disimpan')
                     ->modalHeading('Tambah Persyaratan Perizinan KBLI')
                     ->modalSubmitActionLabel('Simpan')
                     ->modalCancelActionLabel('Batal')

@@ -53,6 +53,7 @@ class KategoriKblisTable
                         $record->update($data);
                     })
                     ->modalHeading('Ubah Kategori KBLI')
+                    ->successNotificationTitle('Data berhasil disimpan')
                     ->modalSubmitActionLabel('Simpan')
                     ->modalCancelActionLabel('Batal')
                     ->modalWidth('lg'),
@@ -68,11 +69,16 @@ class KategoriKblisTable
                     ->modalCancelActionLabel('Batal')
                     ->action(function (KategoriKbli $record): void {
                         $record->delete();
-                    }),
+                    })
+                    ->successNotificationTitle('Data berhasil dihapus'),
+
             ])
             ->bulkActions([
                 BulkActionGroup::make([
-                    DeleteBulkAction::make()->label('Hapus Massal'),
+                    DeleteBulkAction::make()
+                        ->label('Hapus Massal')
+                        ->successNotificationTitle('Data berhasil dihapus'),
+
                 ]),
             ])
             ->toolbarActions([
@@ -85,6 +91,7 @@ class KategoriKblisTable
                         KategoriKbli::create($data);
                     })
                     ->modalHeading('Tambah Kategori KBLI')
+                    ->successNotificationTitle('Data berhasil disimpan')
                     ->modalSubmitActionLabel('Simpan')
                     ->modalCancelActionLabel('Batal')
                     ->modalWidth('lg'),

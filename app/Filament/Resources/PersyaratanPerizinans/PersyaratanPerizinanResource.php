@@ -16,6 +16,8 @@ use Filament\Tables\Table;
 use UnitEnum;
 
 
+
+
 class PersyaratanPerizinanResource extends Resource
 {
     protected static string | UnitEnum | null $navigationGroup = 'Manajemen KBLI';
