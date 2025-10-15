@@ -26,7 +26,7 @@ class PbumkuController extends Controller
             $pbumkuQuery = Pbumku::search($query);
         }
 
-        $pbumku = $pbumkuQuery->with('dinas', 'kbli', 'persyaratanPbumku.subpoin')->paginate(6);
+        $pbumku = $pbumkuQuery->with('dinas', 'kbli', 'persyaratanPbumku.subpoinPbumku')->paginate(6);
 
         return view('utama.pbumku', compact('dinas', 'pbumku', 'selectedDinas', 'query'));
     }
@@ -34,7 +34,7 @@ class PbumkuController extends Controller
     public function show(Pbumku $pbumku)
     {
         Log::info('Pbumku show called', ['pbumku_id' => $pbumku->pbumku_id, 'slug' => $pbumku->slug]);
-        $pbumku->load('dinas', 'kbli', 'persyaratanPbumku.subpoin');
+        $pbumku->load('dinas', 'kbli', 'persyaratanPbumku.subpoinPbumku');
         return view('utama.detailpbumku', compact('pbumku'));
     }
 
@@ -56,7 +56,7 @@ class PbumkuController extends Controller
             $pbumkuQuery->where('dinas_id', $selectedDinas);
         }
 
-        $pbumku = $pbumkuQuery->with('dinas', 'kbli', 'persyaratanPbumku.subpoin')->paginate(6);
+        $pbumku = $pbumkuQuery->with('dinas', 'kbli', 'persyaratanPbumku.subpoinPbumku')->paginate(6);
 
         return view('utama.pbumku', compact('dinas', 'pbumku', 'selectedDinas', 'query'));
     }

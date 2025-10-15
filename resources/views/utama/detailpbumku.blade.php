@@ -167,9 +167,9 @@
                                                             {{ $persyaratan->nama }}
                                                         </h4>
 
-                                                        @if ($persyaratan->subpoin->isNotEmpty())
+                                                        @if ($persyaratan->subpoinPbumku->isNotEmpty())
                                                             <div class="space-y-3">
-                                                                @foreach ($persyaratan->subpoin as $subpoin)
+                                                                @foreach ($persyaratan->subpoinPbumku as $subpoin)
                                                                     @php
                                                                         $items = preg_split(
                                                                             '/(?=\d+\.\s)/',
