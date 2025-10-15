@@ -57,13 +57,13 @@ document.addEventListener("DOMContentLoaded", () => {
                         li.className =
                             "px-4 py-2 hover:bg-gray-200 dark:hover:bg-gray-700 cursor-pointer";
                         li.innerHTML = `
-                            <a href="/kbli/${result.kbli_id}" class="flex flex-col">
-                                <strong>${result.kode} - ${result.nama}</strong>
-                                <span class="text-sm text-gray-600 dark:text-gray-400">${result.ruang_lingkup}</span>
+                            <a href="/kbli/${result.slug}" class="flex flex-col">
+                                <strong>${result.kode} - ${result.name}</strong>
+                                <span class="text-sm text-gray-600 dark:text-gray-400">${result.scope}</span>
                             </a>
                         `;
                         li.addEventListener("click", () => {
-                            window.location.href = `/kbli/${result.kbli_id}`;
+                            window.location.href = `/kbli/${result.slug}`;
                         });
                         suggestionsList.appendChild(li);
                     });
@@ -112,14 +112,6 @@ document.addEventListener("DOMContentLoaded", () => {
             );
             const dinasId = document.getElementById("dinas_id")?.value || "";
 
-            console.log(
-                "Fetching PBUMKU live search from:",
-                liveSearchUrl,
-                "with query:",
-                query,
-                "and dinas_id:",
-                dinasId
-            ); // Debug URL
 
             if (query.length < 2) {
                 suggestionsContainer.classList.add("hidden");
@@ -134,36 +126,21 @@ document.addEventListener("DOMContentLoaded", () => {
                     )}&dinas_id=${encodeURIComponent(dinasId)}`
                 );
                 const results = await response.json();
-                console.log("PBUMKU Live Search Results:", results); // Debug JSON
 
                 suggestionsList.innerHTML = "";
                 if (results.length > 0) {
                     results.forEach((result) => {
-                        const showUrl =
-                            result.search_url ||
-                            window.pbumkuShowUrl.replace(
-                                ":pbumku_id",
-                                result.pbumku_id || result.id || "1"
-                            ); // Fallback
-                        if (!showUrl) {
-                            console.error(
-                                "No valid URL found in result:",
-                                result
-                            );
-                            return;
-                        }
                         const li = document.createElement("li");
                         li.className =
                             "px-4 py-2 hover:bg-gray-200 dark:hover:bg-gray-700 cursor-pointer";
                         li.innerHTML = `
-                            <a href="${showUrl}" class="flex flex-col">
-                                <strong>${result.nama}</strong>
-                                <span class="text-sm text-gray-600 dark:text-gray-400">Tidak ada deskripsi</span>
+                            <a href="/pbumku/${result.slug}" class="flex flex-col">
+                                <strong>${result.name}</strong>
+                                <span class="text-sm text-gray-600 dark:text-gray-400">${result.dinas}</span>
                             </a>
                         `;
                         li.addEventListener("click", () => {
-                            console.log("Redirecting to:", showUrl); // Debug redirect
-                            window.location.href = showUrl;
+                            window.location.href = `/pbumku/${result.slug}`;
                         });
                         suggestionsList.appendChild(li);
                     });
@@ -193,7 +170,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // PAGINATION BERANDA ATAS
 document.addEventListener("DOMContentLoaded", () => {
-    console.log("DOM loaded, initializing Swiper");
     try {
         new Swiper(".carouselUtama", {
             centeredSlides: true,
@@ -227,7 +203,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 },
             },
         });
-        console.log("Swiper initialized");
     } catch (error) {
         console.error("Swiper initialization failed:", error);
     }
@@ -289,4 +264,74 @@ document.addEventListener("DOMContentLoaded", () => {
             },
         },
     });
+});
+
+// Quick search functionality for KBLI page
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.quick-search-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const searchTerm = this.getAttribute('data-search');
+            const searchInput = document.getElementById('search-input');
+            if (searchInput) {
+                searchInput.value = searchTerm;
+                const form = document.querySelector('form[action*="kbli.search"]');
+                if (form) form.submit();
+            }
+        });
+    });
+});
+
+// PBUMKU page functionality
+document.addEventListener('DOMContentLoaded', function() {
+    // Quick search functionality for PBUMKU page
+    document.querySelectorAll('.quick-search-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const searchTerm = this.getAttribute('data-search');
+            const searchInput = document.getElementById('pbumku-search-input');
+            if (searchInput) {
+                searchInput.value = searchTerm;
+                const form = document.querySelector('form[action*="pbumku.search"]');
+                if (form) form.submit();
+            }
+        });
+    });
+
+    // Enhanced dropdown functionality (excluding language dropdowns)
+    const dropdowns = document.querySelectorAll('.dropdown:not(.language-dropdown):not(.language-dropdown-mobile)');
+
+    dropdowns.forEach(dropdown => {
+        const button = dropdown.querySelector('[tabindex="0"]');
+        const menu = dropdown.querySelector('.dropdown-content');
+
+        if (button && menu) {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                const isOpen = !menu.classList.contains('hidden');
+
+                // Close all other dropdowns (excluding language dropdowns)
+                document.querySelectorAll('.dropdown-content').forEach(otherMenu => {
+                    if (otherMenu !== menu && !otherMenu.closest('.language-dropdown') && !otherMenu.closest('.language-dropdown-mobile')) {
+                        otherMenu.classList.add('hidden');
+                    }
+                });
+
+                // Toggle current dropdown
+                menu.classList.toggle('hidden');
+            });
+        }
+    });
+
+    // Close dropdowns when clicking outside (excluding language dropdowns)
+    document.addEventListener('click', function(e) {
+        if (!e.target.closest('.dropdown')) {
+            document.querySelectorAll('.dropdown-content').forEach(menu => {
+                if (!menu.closest('.language-dropdown') && !menu.closest('.language-dropdown-mobile')) {
+                    menu.classList.add('hidden');
+                }
+            });
+        }
+    });
+
 });

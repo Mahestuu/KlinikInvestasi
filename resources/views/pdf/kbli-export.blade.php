@@ -153,9 +153,9 @@
             @endif
         </ol>
 
-        {{-- @if (!$loop->last)
+        @if (!$loop->last)
             <div class="page-break"></div>
-        @endif --}}
+        @endif
     @endforeach
 </body>
 

@@ -31,10 +31,10 @@ class PbumkuController extends Controller
         return view('utama.pbumku', compact('dinas', 'pbumku', 'selectedDinas', 'query'));
     }
 
-    public function show($pbumku_id)
+    public function show(Pbumku $pbumku)
     {
-        Log::info('Pbumku show called', ['pbumku_id' => $pbumku_id]);
-        $pbumku = Pbumku::with('dinas', 'kbli', 'persyaratanPbumku.subpoin')->findOrFail($pbumku_id);
+        Log::info('Pbumku show called', ['pbumku_id' => $pbumku->pbumku_id, 'slug' => $pbumku->slug]);
+        $pbumku->load('dinas', 'kbli', 'persyaratanPbumku.subpoin');
         return view('utama.detailpbumku', compact('pbumku'));
     }
 
@@ -75,8 +75,10 @@ class PbumkuController extends Controller
 
         $results = $pbumkuQuery->take(5)->get()->map(function ($pbumku) {
             return [
-                'nama' => $pbumku->nama,
-                'search_url' => route('pbumku.show', ['pbumku_id' => $pbumku->pbumku_id]),
+                'id' => $pbumku->pbumku_id,
+                'slug' => $pbumku->slug,
+                'name' => $pbumku->nama,
+                'dinas' => $pbumku->dinas->nama ?? 'Tidak Ada Dinas',
             ];
         });
 

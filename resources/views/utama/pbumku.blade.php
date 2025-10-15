@@ -102,33 +102,35 @@
 
                     <!-- Search Form -->
                     <form action="{{ LaravelLocalization::getLocalizedURL(null, route('pbumku.search')) }}" method="GET" class="flex-1">
-                        <div class="relative">
-                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                <i class="fas fa-search text-gray-400"></i>
-                            </div>
-                            <input type="text" name="query" id="pbumku-search-input"
-                                placeholder="{{ __('messages.search_placeholder') }}"
-                                class="w-full pl-12 pr-4 py-4 text-base bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-2xl shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:text-white transition-all duration-300"
-                                value="{{ $query ?? '' }}" autocomplete="off"
-                                data-live-search-url="{{ LaravelLocalization::getLocalizedURL(null, route('pbumku.live-search')) }}" />
-                            @if ($selectedDinas)
-                                <input type="hidden" name="dinas_id" id="dinas_id" value="{{ $selectedDinas }}">
-                            @endif
+                        <div class="flex flex-col sm:flex-row gap-4">
+                            <div class="relative flex-1">
+                                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                    <i class="fas fa-search text-gray-400"></i>
+                                </div>
+                                <input type="text" name="query" id="pbumku-search-input"
+                                    placeholder="{{ __('messages.search_placeholder') }}"
+                                    class="w-full pl-12 pr-4 py-4 text-base bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-2xl shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:text-white transition-all duration-300"
+                                    value="{{ $query ?? '' }}" autocomplete="off"
+                                    data-live-search-url="{{ LaravelLocalization::getLocalizedURL(null, route('pbumku.live-search')) }}" />
+                                @if ($selectedDinas)
+                                    <input type="hidden" name="dinas_id" id="dinas_id" value="{{ $selectedDinas }}">
+                                @endif
 
-                            <!-- Suggestions Dropdown -->
-                            <div id="pbumku-suggestions"
-                                class="absolute z-50 w-full mt-2 dark:text-white bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-xl hidden overflow-hidden">
-                                <ul id="pbumku-suggestions-list" class="max-h-60 overflow-y-auto "></ul>
+                                <!-- Suggestions Dropdown -->
+                                <div id="pbumku-suggestions"
+                                    class="absolute z-50 w-full mt-2 dark:text-white bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-xl hidden overflow-hidden">
+                                    <ul id="pbumku-suggestions-list" class="max-h-60 overflow-y-auto "></ul>
+                                </div>
                             </div>
+
+                            <!-- Search Button -->
+                            <button type="submit"
+                                class="px-6 py-4 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold rounded-2xl shadow-lg transition-all duration-300 transform hover:scale-105 flex items-center space-x-2 justify-center">
+                                <i class="fas fa-search"></i>
+                                <span>{{ __('messages.search') }}</span>
+                            </button>
                         </div>
                     </form>
-
-                    <!-- Search Button -->
-                    <button type="submit"
-                        class="px-6 py-4 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold rounded-2xl shadow-lg transition-all duration-300 transform hover:scale-105 flex items-center space-x-2 justify-center">
-                        <i class="fas fa-search"></i>
-                        <span>{{ __('messages.search') }}</span>
-                    </button>
                 </div>
 
                 <!-- Quick Actions -->
@@ -257,7 +259,7 @@
 
                                         <!-- Action Button -->
                                         <div class="flex items-center justify-end">
-                                            <a href="{{ LaravelLocalization::getLocalizedURL(null, route('pbumku.show', ['pbumku_id' => $item->pbumku_id])) }}"
+                                            <a href="{{ LaravelLocalization::getLocalizedURL(null, route('pbumku.show', $item->slug)) }}"
                                                 class="px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white rounded-xl transition-all duration-300 transform hover:scale-105 flex items-center space-x-2 group">
                                                 <span>{{ __('messages.view_details') }}</span>
                                                 <i
@@ -331,119 +333,4 @@
         </div>
     </section>
 
-    <!-- URL template untuk JavaScript -->
-    {{-- <script>
-        window.pbumkuShowUrl = '{{ LaravelLocalization::getLocalizedURL(null, route('pbumku.show', ['pbumku_id' => ':pbumku_id'])) }}';
-        window.translations = {
-            no_description: '{{ __('messages.no_description') }}',
-        };
-    </script> --}}
 @endsection
-
-{{-- @push('scripts')
-    <script>
-        // Quick search functionality
-        document.querySelectorAll('.quick-search-btn').forEach(button => {
-            button.addEventListener('click', function() {
-                const searchTerm = this.getAttribute('data-search');
-                document.getElementById('pbumku-search-input').value = searchTerm;
-                const form = document.querySelector('form[action*="{{ route('pbumku.search') }}"]');
-                if (form) form.submit();
-            });
-        });
-
-        // Enhanced dropdown functionality
-        document.addEventListener('DOMContentLoaded', function() {
-            const dropdowns = document.querySelectorAll('.dropdown');
-
-            dropdowns.forEach(dropdown => {
-                const button = dropdown.querySelector('[tabindex="0"]');
-                const menu = dropdown.querySelector('.dropdown-content');
-
-                if (button && menu) {
-                    button.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        e.stopPropagation();
-
-                        const isOpen = !menu.classList.contains('hidden');
-
-                        // Close all other dropdowns
-                        document.querySelectorAll('.dropdown-content').forEach(otherMenu => {
-                            if (otherMenu !== menu) {
-                                otherMenu.classList.add('hidden');
-                            }
-                        });
-
-                        // Toggle current dropdown
-                        menu.classList.toggle('hidden');
-                    });
-                }
-            });
-
-            // Close dropdowns when clicking outside
-            document.addEventListener('click', function(e) {
-                if (!e.target.closest('.dropdown')) {
-                    document.querySelectorAll('.dropdown-content').forEach(menu => {
-                        menu.classList.add('hidden');
-                    });
-                }
-            });
-
-            // Live search functionality
-            const searchInput = document.getElementById('pbumku-search-input');
-            const suggestions = document.getElementById('pbumku-suggestions');
-            const suggestionsList = document.getElementById('pbumku-suggestions-list');
-
-            if (searchInput) {
-                searchInput.addEventListener('input', async function() {
-                    const query = this.value.trim();
-
-                    if (query.length < 2) {
-                        suggestions.classList.add('hidden');
-                        return;
-                    }
-
-                    suggestionsList.innerHTML =
-                        '<li class="px-4 py-3 text-gray-500 dark:text-gray-400"><i class="fas fa-spinner fa-spin mr-2"></i>{{ __('messages.searching') }}</li>';
-                    suggestions.classList.remove('hidden');
-
-                    try {
-                        const response = await fetch(`${searchInput.dataset.liveSearchUrl}?query=${encodeURIComponent(query)}`);
-                        const suggestionsData = await response.json();
-
-                        if (suggestionsData.length === 0) {
-                            suggestionsList.innerHTML =
-                                '<li class="px-4 py-3 text-gray-500 dark:text-gray-400">{{ __('messages.no_suggestions') }}</li>';
-                        } else {
-                            suggestionsList.innerHTML = suggestionsData.map(item => `
-                                <li class="px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer border-b border-gray-100 dark:border-gray-700 last:border-b-0 transition-colors">
-                                    <div class="font-semibold text-blue-600 dark:text-blue-400">${item.name}</div>
-                                    <div class="text-xs text-gray-500 dark:text-gray-400">${item.type || '{{ __('messages.no_description') }}'}</div>
-                                </li>
-                            `).join('');
-
-                            suggestionsList.querySelectorAll('li').forEach((li, index) => {
-                                li.addEventListener('click', function() {
-                                    const url = window.pbumkuShowUrl.replace(':pbumku_id', suggestionsData[index].id);
-                                    window.location.href = url;
-                                });
-                            });
-                        }
-                        suggestions.classList.remove('hidden');
-                    } catch (error) {
-                        suggestionsList.innerHTML =
-                            '<li class="px-4 py-3 text-red-500 dark:text-red-400">{{ __('messages.search_error') }}</li>';
-                        suggestions.classList.remove('hidden');
-                    }
-                });
-
-                // Hide suggestions when clicking outside
-                document.addEventListener('click', function(e) {
-                    if (!suggestions.contains(e.target) && e.target !== searchInput) {
-                        suggestions.classList.add('hidden');
-                    }
-                });
-            }
-        });
-    </script>
-@endpush --}}

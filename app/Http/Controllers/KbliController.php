@@ -18,10 +18,10 @@ class KbliController extends Controller
         return view('utama.kbli', compact('dinas'));
     }
 
-   public function show($kbli_id)
+   public function show(Kbli $kbli)
     {
-        Log::info('Show method called', ['kbli_id' => $kbli_id]);
-        $kbli = Kbli::with('dinas', 'kategoriKbli', 'persyaratanPerizinan.subpoin')->findOrFail($kbli_id);
+        Log::info('Show method called', ['kbli_id' => $kbli->kbli_id, 'slug' => $kbli->slug]);
+        $kbli->load('dinas', 'kategoriKbli', 'persyaratanPerizinan.subpoin.details');
         return view('utama.detailkbli', compact('kbli'));
     }
 
@@ -42,10 +42,11 @@ class KbliController extends Controller
         return response()->json(
             $results->map(function ($item) {
                 return [
-                    'kbli_id' => $item->kbli_id,
+                    'id' => $item->kbli_id,
+                    'slug' => $item->slug,
                     'kode' => $item->kode,
-                    'nama' => $item->nama,
-                    'ruang_lingkup' => $item->ruang_lingkup,
+                    'name' => $item->nama,
+                    'scope' => $item->ruang_lingkup,
                     'kategori' => $item->kategoriKbli->nama ?? 'Tidak Ada Kategori',
                     'dinas' => $item->dinas->nama ?? 'Tidak Ada Dinas',
                 ];

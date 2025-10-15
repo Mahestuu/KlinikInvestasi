@@ -38,7 +38,7 @@
                     </li>
                 </ul>
                 <!-- Language Toggle -->
-                <div class="dropdown dropdown-end">
+                <div class="dropdown dropdown-end language-dropdown">
                     <div tabindex="0" role="button" class="btn btn-ghost btn-circle hover:bg-blue-100 dark:hover:bg-blue-900/50 transition-all duration-300">
                         <i class="fas fa-globe w-5 h-5"></i>
                     </div>
@@ -79,7 +79,7 @@
                         </a>
                     </li>
                     <li class="border-t border-gray-200 dark:border-gray-700 pt-2 mt-2">
-                        <div class="dropdown dropdown-end">
+                        <div class="dropdown dropdown-end language-dropdown-mobile">
                             <div tabindex="0" role="button" class="flex items-center space-x-3 px-4 py-3 rounded-xl font-semibold text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-300 w-full text-left">
                                 <i class="fas fa-globe text-lg"></i>
                                 <span>{{ __('messages.language') }}</span>

@@ -22,6 +22,8 @@ class KbliPdfController extends Controller
 
             if ($kbliId === 'all') {
                 $kblis = Kbli::with(['kategoriKbli', 'dinas', 'persyaratanPerizinan.subpoin.details'])->get();
+            } elseif (is_array($kbliId)) {
+                $kblis = Kbli::with(['kategoriKbli', 'dinas', 'persyaratanPerizinan.subpoin.details'])->whereIn('kbli_id', $kbliId)->get();
             } else {
                 $kblis = Kbli::with(['kategoriKbli', 'dinas', 'persyaratanPerizinan.subpoin.details'])->where('kbli_id', $kbliId)->get();
             }
@@ -37,7 +39,8 @@ class KbliPdfController extends Controller
                     'isPhpEnabled' => true,
                 ]);
 
-            return $pdf->download('daftar-kbli-persyaratan-' . ($kbliId === 'all' ? 'semua' : $kbliId) . '.pdf');
+            $filename = 'daftar-kbli-persyaratan-' . ($kbliId === 'all' ? 'semua' : (is_array($kbliId) ? implode('-', $kbliId) : $kbliId)) . '.pdf';
+            return $pdf->download($filename);
         } catch (\Exception $e) {
             Log::error('PDF Generation Error: ' . $e->getMessage());
             return redirect()->back()->with('error', 'Gagal generate PDF: ' . $e->getMessage());

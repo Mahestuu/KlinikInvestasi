@@ -200,7 +200,7 @@
 
                                         <!-- Action Button -->
                                         <div class="card-actions">
-                                            <a href="{{ LaravelLocalization::getLocalizedURL(null, route('kbli.show', $item->kbli_id)) }}"
+                                            <a href="{{ LaravelLocalization::getLocalizedURL(null, route('kbli.show', $item->slug)) }}"
                                                 class="btn btn-primary btn-outline w-full group-hover:bg-blue-600 group-hover:text-white group-hover:border-blue-600 transition-all duration-300">
                                                 <i class="fas fa-eye mr-2"></i>
                                                 {{ __('messages.view_details') }}
@@ -269,7 +269,7 @@
                                                     {{ $kbli->nama }}
                                                 </p>
                                             </div>
-                                            <a href="{{ LaravelLocalization::getLocalizedURL(null, route('kbli.show', $kbli->kbli_id)) }}"
+                                            <a href="{{ LaravelLocalization::getLocalizedURL(null, route('kbli.show', $kbli->slug)) }}"
                                                 class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors text-sm flex items-center space-x-2">
                                                 <span>{{ __('messages.kbli_detail') }}</span>
                                                 <i class="fas fa-external-link-alt text-xs"></i>
@@ -285,88 +285,5 @@
         </div>
     </section>
 
-    <!-- URL template untuk JavaScript -->
-    <script>
-        window.kbliShowUrl = '{{ LaravelLocalization::getLocalizedURL(null, route('kbli.show', ['kbli_id' => ':kbli_id'])) }}';
-        window.translations = {
-            no_description: '{{ __('messages.no_scope') }}',
-            searching: '{{ __('messages.searching') }}',
-            no_suggestions: '{{ __('messages.no_suggestions') }}',
-            search_error: '{{ __('messages.search_error') }}',
-        };
-    </script>
 @endsection
 
-@push('scripts')
-    <script>
-        // Quick search functionality
-        document.querySelectorAll('.quick-search-btn').forEach(button => {
-            button.addEventListener('click', function() {
-                const searchTerm = this.getAttribute('data-search');
-                document.getElementById('search-input').value = searchTerm;
-                const form = document.querySelector('form[action*="{{ route('kbli.search') }}"]');
-                if (form) form.submit();
-            });
-        });
-
-        // Live search functionality
-        document.addEventListener('DOMContentLoaded', function() {
-            const searchInput = document.getElementById('search-input');
-            const suggestions = document.getElementById('suggestions');
-            const suggestionsList = document.getElementById('suggestions-list');
-
-            if (searchInput) {
-                searchInput.addEventListener('input', async function() {
-                    const query = this.value.trim();
-
-                    if (query.length < 2) {
-                        suggestions.classList.add('hidden');
-                        return;
-                    }
-
-                    suggestionsList.innerHTML =
-                        '<li class="px-4 py-3 text-gray-500 dark:text-gray-400"><i class="fas fa-spinner fa-spin mr-2"></i>' +
-                        window.translations.searching + '</li>';
-                    suggestions.classList.remove('hidden');
-
-                    try {
-                        const response = await fetch(`${searchInput.dataset.liveSearchUrl}?query=${encodeURIComponent(query)}`);
-                        const suggestionsData = await response.json();
-
-                        if (suggestionsData.length === 0) {
-                            suggestionsList.innerHTML =
-                                '<li class="px-4 py-3 text-gray-500 dark:text-gray-400">' + window.translations.no_suggestions +
-                                '</li>';
-                        } else {
-                            suggestionsList.innerHTML = suggestionsData.map(item => `
-                                <li class="px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer border-b border-gray-100 dark:border-gray-700 last:border-b-0 transition-colors">
-                                    <div class="font-semibold text-blue-600 dark:text-blue-400">${item.kode} - ${item.name}</div>
-                                    <div class="text-xs text-gray-500 dark:text-gray-400">${item.scope || window.translations.no_description}</div>
-                                </li>
-                            `).join('');
-
-                            suggestionsList.querySelectorAll('li').forEach((li, index) => {
-                                li.addEventListener('click', function() {
-                                    const url = window.kbliShowUrl.replace(':kbli_id', suggestionsData[index].id);
-                                    window.location.href = url;
-                                });
-                            });
-                        }
-                        suggestions.classList.remove('hidden');
-                    } catch (error) {
-                        suggestionsList.innerHTML =
-                            '<li class="px-4 py-3 text-red-500 dark:text-red-400">' + window.translations.search_error + '</li>';
-                        suggestions.classList.remove('hidden');
-                    }
-                });
-
-                // Hide suggestions when clicking outside
-                document.addEventListener('click', function(e) {
-                    if (!suggestions.contains(e.target) && e.target !== searchInput) {
-                        suggestions.classList.add('hidden');
-                    }
-                });
-            }
-        });
-    </script>
-@endpush

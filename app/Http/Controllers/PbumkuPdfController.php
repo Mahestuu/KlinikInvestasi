@@ -14,11 +14,11 @@ class PbumkuPdfController extends Controller
         $locale = app()->getLocale();
 
         if (empty($pbumkuIds)) {
-            $pbumkus = Pbumku::with(['dinas', 'persyaratanPbumku'])->get();
+            $pbumkus = Pbumku::with(['dinas', 'kbli', 'persyaratanPbumku.subpoinPbumku'])->get();
         } elseif (is_array($pbumkuIds)) {
-            $pbumkus = Pbumku::with(['dinas', 'persyaratanPbumku'])->whereIn('pbumku_id', $pbumkuIds)->get();
+            $pbumkus = Pbumku::with(['dinas', 'kbli', 'persyaratanPbumku.subpoinPbumku'])->whereIn('pbumku_id', $pbumkuIds)->get();
         } else {
-            $pbumkus = Pbumku::with(['dinas', 'persyaratanPbumku'])->where('pbumku_id', $pbumkuIds)->get();
+            $pbumkus = Pbumku::with(['dinas', 'kbli', 'persyaratanPbumku.subpoinPbumku'])->where('pbumku_id', $pbumkuIds)->get();
         }
 
         $pdf = Pdf::loadView('pdf.pbumku-export', compact('pbumkus', 'locale'));

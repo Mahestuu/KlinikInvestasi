@@ -107,7 +107,7 @@
 
                                 <div class="flex flex-wrap gap-3">
                                     @foreach ($pbumku->kbli as $kbli)
-                                        <a href="{{ LaravelLocalization::getLocalizedURL(null, route('kbli.show', $kbli->kbli_id)) }}"
+                                        <a href="{{ LaravelLocalization::getLocalizedURL(null, route('kbli.show', $kbli->slug)) }}"
                                             class="inline-flex items-center space-x-2 bg-blue-50 dark:bg-blue-900/30 hover:bg-blue-100 dark:hover:bg-blue-900/50 text-blue-700 dark:text-blue-300 px-4 py-2 rounded-xl transition-all duration-300 transform hover:scale-105 group">
                                             <span class="font-mono font-bold">{{ $kbli->kode }}</span>
                                             <i

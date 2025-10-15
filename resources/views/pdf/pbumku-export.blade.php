@@ -13,7 +13,8 @@
         }
 
         h1,
-        h2 {
+        h2,
+        h3 {
             text-align: center;
         }
 
@@ -24,6 +25,12 @@
         h2 {
             margin-top: 5px;
             color: #444;
+        }
+
+        h3 {
+            margin-top: 5px;
+            color: #666;
+            font-size: 1.1em;
         }
 
         ol,
@@ -63,8 +70,9 @@
 
 <body>
     @foreach ($pbumkus as $pbumku)
-        <h1>Pbumku {{ $pbumku->pbumku_id }}</h1>
-        <h2>{{ $pbumku->nama }} ({{ $pbumku->dinas->nama ?? 'Tidak ada dinas' }})</h2>
+        <h1>{{ $pbumku->dinas->nama ?? 'Tidak ada dinas' }}</h1>
+        <h2>{{ $pbumku->nama }}</h2>
+        <h3>{{ $pbumku->kbli->pluck('kode')->implode(', ') ?: 'Tidak ada KBLI terkait' }}</h3>
 
         <p class="section-title">{{ __('Persyaratan Pbumku') }}:</p>
 
@@ -76,66 +84,10 @@
                         $cleanedNama = preg_replace('/^\d+\.\s/', '', trim($persyaratan->nama));
                     @endphp
                     <li>{{ $loop->iteration }}. {{ $cleanedNama }}
-                        @if ($persyaratan->subpoin->isNotEmpty())
+                        @if ($persyaratan->subpoinPbumku->isNotEmpty())
                             <ol type="a">
-                                @foreach ($persyaratan->subpoin as $subpoin)
-                                    <li>{{ $subpoin->item }}
-                                        @if ($subpoin->details->isNotEmpty())
-                                            <ul class="sub-level-1">
-                                                @foreach ($subpoin->details as $detail)
-                                                    @php
-                                                        // Identifikasi header (Perorangan, Badan Hukum, dll.)
-                                                        $headerPattern =
-                                                            '/^(Perorangan|Badan Hukum|Badan Usaha)(?:\s*:)?/';
-                                                        $isHeader = preg_match(
-                                                            $headerPattern,
-                                                            $detail->text,
-                                                            $headerMatches,
-                                                        );
-                                                        $headerText = $isHeader ? $headerMatches[1] . ':' : null;
-
-                                                        // Pisahkan item non-header
-                                                        $cleanDetailText = $isHeader
-                                                            ? preg_replace($headerPattern, '', trim($detail->text))
-                                                            : $detail->text;
-                                                        $items = array_filter(
-                                                            array_map(
-                                                                'trim',
-                                                                preg_split('/(?<!\w\.\s)-(?=\s)/', $cleanDetailText),
-                                                            ),
-                                                            fn($item) => !empty($item),
-                                                        );
-
-                                                        $detailFormattedItems = [];
-                                                        if ($isHeader) {
-                                                            $detailFormattedItems[] = [
-                                                                'text' => $headerText,
-                                                                'isHeader' => true,
-                                                            ];
-                                                        }
-                                                        foreach ($items as $item) {
-                                                            $isLetter = preg_match('/^[a-zA-Z]\.\s/', $item);
-                                                            $isBullet = preg_match('/^-\s/', $item);
-
-                                                            $itemText = $isLetter || $isBullet ? $item : "- $item";
-                                                            $detailFormattedItems[] = [
-                                                                'text' => $itemText,
-                                                                'isHeader' => false,
-                                                            ];
-                                                        }
-                                                    @endphp
-                                                    @foreach ($detailFormattedItems as $item)
-                                                        <li
-                                                            class="{{ $item['isHeader'] ? 'sub-level-1' : 'sub-level-2' }}">
-                                                            {{ $item['text'] }}
-                                                        </li>
-                                                    @endforeach
-                                                @endforeach
-                                            </ul>
-                                        @else
-                                            <div class="empty-space"></div>
-                                        @endif
-                                    </li>
+                                @foreach ($persyaratan->subpoinPbumku as $subpoin)
+                                    <li>{{ $subpoin->item }}</li>
                                 @endforeach
                             </ol>
                         @endif
