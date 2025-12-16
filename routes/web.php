@@ -7,6 +7,8 @@ use App\Http\Controllers\TestController;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 use App\Http\Controllers\KbliPdfController;
 use App\Http\Controllers\PbumkuPdfController;
+use App\Http\Controllers\ImportKbliFromPdfController;
+use App\Http\Controllers\ImportPbumkuFromPdfController;
 
 Route::group([
     'prefix' => LaravelLocalization::setLocale(),
@@ -14,6 +16,8 @@ Route::group([
 ], function () {
     Route::get('/pbumku/pdf/export', [PbumkuPdfController::class, 'generate'])->name('pbumku.pdf.export');
     Route::get('/kbli/export-pdf', [KbliPdfController::class, 'generate'])->name('kbli.export-pdf');
+    Route::post('/kbli/import-pdf', [ImportKbliFromPdfController::class, 'import'])->name('kbli.import-pdf');
+    Route::post('/pbumku/import-pdf', [ImportPbumkuFromPdfController::class, 'import'])->name('pbumku.import-pdf');
 
 
     Route::get('/', function () {

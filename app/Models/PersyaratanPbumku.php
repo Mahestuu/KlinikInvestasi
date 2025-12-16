@@ -19,6 +19,6 @@ class PersyaratanPbumku extends Model
 
     public function subpoinPbumku()
     {
-        return $this->hasMany(SubpoinPbumku::class, 'persyaratan_pbumku_id', 'persyaratan_pbumku_id');
+        return $this->hasMany(SubPoinPbumku::class, 'persyaratan_pbumku_id', 'persyaratan_pbumku_id');
     }
 }

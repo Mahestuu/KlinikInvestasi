@@ -61,7 +61,8 @@ class Kbli extends Model
         });
 
         static::updating(function ($kbli) {
-            if ($kbli->isDirty('nama') && empty($kbli->slug)) {
+            // Jika nama berubah, selalu generate slug baru
+            if ($kbli->isDirty('nama')) {
                 $kbli->slug = $kbli->generateSlug();
             }
         });

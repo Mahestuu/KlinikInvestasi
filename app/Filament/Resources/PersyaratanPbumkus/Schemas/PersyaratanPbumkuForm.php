@@ -23,10 +23,10 @@ class PersyaratanPbumkuForm
                 Repeater::make('persyaratan')
                     ->label('Persyaratan Pbumku')
                     ->schema([
-                        TextInput::make('nama')
+                        Textarea::make('nama')
                             ->label('Nama Persyaratan')
                             ->required()
-                            ->maxLength(255)
+                            ->rows(3)
                             ->placeholder('Masukkan nama persyaratan'),
                         Repeater::make('subpoin')
                             ->label('Sub-Poin')
@@ -35,6 +35,20 @@ class PersyaratanPbumkuForm
                                     ->label('Item Sub-Poin')
                                     ->required()
                                     ->placeholder('Masukkan item sub-poin'),
+                                Repeater::make('details')
+                                    ->label('Turunan Sub-Poin (Opsional)')
+                                    ->schema([
+                                        Textarea::make('text')
+                                            ->label('Teks Turunan')
+                                            ->required()
+                                            ->placeholder('Masukkan teks turunan')
+                                            ->rows(4),
+                                    ])
+                                    ->collapsible()
+                                    ->itemLabel(fn(array $state): ?string => $state['text'] ?? null)
+                                    ->addActionLabel('Tambah Turunan Sub-Poin')
+                                    ->deleteAction(fn($action) => $action->requiresConfirmation())
+                                    ->grid(2),
                             ])
                             ->collapsible()
                             ->itemLabel(fn(array $state): ?string => $state['item'] ?? null)
@@ -61,10 +75,10 @@ class PersyaratanPbumkuForm
             Repeater::make('persyaratan')
                 ->label('Persyaratan Pbumku')
                 ->schema([
-                    TextInput::make('nama')
+                    Textarea::make('nama')
                         ->label('Nama Persyaratan')
                         ->required()
-                        ->maxLength(255)
+                        ->rows(3)
                         ->placeholder('Masukkan nama persyaratan'),
                     Repeater::make('subpoin')
                         ->label('Sub-Poin')
@@ -72,9 +86,22 @@ class PersyaratanPbumkuForm
                             Textarea::make('item')
                                 ->label('Item Sub-Poin')
                                 ->required()
-                                ->rows(10)
-                                ->cols(10)
+                                ->rows(4)
                                 ->placeholder('Masukkan item sub-poin'),
+                            Repeater::make('details')
+                                ->label('Turunan Sub-Poin (Opsional)')
+                                ->schema([
+                                    Textarea::make('text')
+                                        ->label('Teks Turunan')
+                                        ->required()
+                                        ->placeholder('Masukkan teks turunan')
+                                        ->rows(4),
+                                ])
+                                ->collapsible()
+                                ->itemLabel(fn(array $state): ?string => $state['text'] ?? null)
+                                ->addActionLabel('Tambah Turunan Sub-Poin')
+                                ->deleteAction(fn($action) => $action->requiresConfirmation())
+                                ->grid(2),
                         ])
                         ->collapsible()
                         ->itemLabel(fn(array $state): ?string => $state['item'] ?? null)

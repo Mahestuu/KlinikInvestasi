@@ -28,27 +28,58 @@ import "./bootstrap";
 //     button.addEventListener("click", toggleTheme);
 // });
 
+// Debounce function untuk menunda fetch request
+function debounce(func, wait) {
+    let timeout;
+    return function (...args) {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => func.apply(this, args), wait);
+    };
+}
+
 //LIVE SEARCH KBLI
 document.addEventListener("DOMContentLoaded", () => {
     const searchInput = document.getElementById("search-input");
     const suggestionsContainer = document.getElementById("suggestions");
     const suggestionsList = document.getElementById("suggestions-list");
+    const loadingSpinner = document.getElementById("kbli-search-loading");
 
     if (searchInput && suggestionsContainer && suggestionsList) {
-        searchInput.addEventListener("input", async function () {
-            const query = this.value.trim();
+        let isLoading = false;
+
+        const debouncedSearch = debounce(async () => {
+            const query = searchInput.value.trim();
+            const liveSearchUrl = searchInput.getAttribute(
+                "data-live-search-url"
+            );
 
             if (query.length < 2) {
                 suggestionsContainer.classList.add("hidden");
                 suggestionsList.innerHTML = "";
+                if (loadingSpinner) {
+                    loadingSpinner.classList.add("hidden");
+                }
+                isLoading = false;
                 return;
             }
 
+            // Tampilkan loading spinner
+            if (loadingSpinner) {
+                loadingSpinner.classList.remove("hidden");
+            }
+            isLoading = true;
+
             try {
                 const response = await fetch(
-                    `/kbli/live-search?query=${encodeURIComponent(query)}`
+                    `${liveSearchUrl}?query=${encodeURIComponent(query)}`
                 );
                 const results = await response.json();
+
+                // Sembunyikan loading spinner
+                if (loadingSpinner) {
+                    loadingSpinner.classList.add("hidden");
+                }
+                isLoading = false;
 
                 suggestionsList.innerHTML = "";
                 if (results.length > 0) {
@@ -73,8 +104,35 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             } catch (error) {
                 console.error("Error fetching suggestions:", error);
+                // Sembunyikan loading spinner saat error
+                if (loadingSpinner) {
+                    loadingSpinner.classList.add("hidden");
+                }
+                isLoading = false;
                 suggestionsContainer.classList.add("hidden");
             }
+        }, 300); // Jeda 300ms
+
+        searchInput.addEventListener("input", () => {
+            const query = searchInput.value.trim();
+
+            // Jika query kurang dari 2 karakter, sembunyikan loading
+            if (query.length < 2) {
+                if (loadingSpinner) {
+                    loadingSpinner.classList.add("hidden");
+                }
+                suggestionsContainer.classList.add("hidden");
+                suggestionsList.innerHTML = "";
+                isLoading = false;
+            } else {
+                // Tampilkan loading spinner saat user mengetik (sebelum debounce)
+                if (loadingSpinner && !isLoading) {
+                    loadingSpinner.classList.remove("hidden");
+                }
+            }
+
+            // Jalankan debounced search
+            debouncedSearch();
         });
 
         // Sembunyikan dropdown saat klik di luar
@@ -89,22 +147,16 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
-// Debounce function untuk menunda fetch request
-function debounce(func, wait) {
-    let timeout;
-    return function (...args) {
-        clearTimeout(timeout);
-        timeout = setTimeout(() => func.apply(this, args), wait);
-    };
-}
-
 // Live Search untuk PBUMKU
 document.addEventListener("DOMContentLoaded", () => {
     const searchInput = document.getElementById("pbumku-search-input");
     const suggestionsList = document.getElementById("pbumku-suggestions-list");
     const suggestionsContainer = document.getElementById("pbumku-suggestions");
+    const loadingSpinner = document.getElementById("pbumku-search-loading");
 
     if (searchInput && suggestionsList && suggestionsContainer) {
+        let isLoading = false;
+
         const debouncedSearch = debounce(async () => {
             const query = searchInput.value.trim();
             const liveSearchUrl = searchInput.getAttribute(
@@ -112,12 +164,21 @@ document.addEventListener("DOMContentLoaded", () => {
             );
             const dinasId = document.getElementById("dinas_id")?.value || "";
 
-
             if (query.length < 2) {
                 suggestionsContainer.classList.add("hidden");
                 suggestionsList.innerHTML = "";
+                if (loadingSpinner) {
+                    loadingSpinner.classList.add("hidden");
+                }
+                isLoading = false;
                 return;
             }
+
+            // Tampilkan loading spinner
+            if (loadingSpinner) {
+                loadingSpinner.classList.remove("hidden");
+            }
+            isLoading = true;
 
             try {
                 const response = await fetch(
@@ -126,6 +187,12 @@ document.addEventListener("DOMContentLoaded", () => {
                     )}&dinas_id=${encodeURIComponent(dinasId)}`
                 );
                 const results = await response.json();
+
+                // Sembunyikan loading spinner
+                if (loadingSpinner) {
+                    loadingSpinner.classList.add("hidden");
+                }
+                isLoading = false;
 
                 suggestionsList.innerHTML = "";
                 if (results.length > 0) {
@@ -150,11 +217,36 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             } catch (error) {
                 console.error("Error fetching PBUMKU suggestions:", error);
+                // Sembunyikan loading spinner saat error
+                if (loadingSpinner) {
+                    loadingSpinner.classList.add("hidden");
+                }
+                isLoading = false;
                 suggestionsContainer.classList.add("hidden");
             }
         }, 300); // Jeda 300ms
 
-        searchInput.addEventListener("input", debouncedSearch);
+        searchInput.addEventListener("input", () => {
+            const query = searchInput.value.trim();
+
+            // Jika query kurang dari 2 karakter, sembunyikan loading
+            if (query.length < 2) {
+                if (loadingSpinner) {
+                    loadingSpinner.classList.add("hidden");
+                }
+                suggestionsContainer.classList.add("hidden");
+                suggestionsList.innerHTML = "";
+                isLoading = false;
+            } else {
+                // Tampilkan loading spinner saat user mengetik (sebelum debounce)
+                if (loadingSpinner && !isLoading) {
+                    loadingSpinner.classList.remove("hidden");
+                }
+            }
+
+            // Jalankan debounced search
+            debouncedSearch();
+        });
 
         // Sembunyikan dropdown saat klik di luar
         document.addEventListener("click", (event) => {
@@ -267,14 +359,16 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // Quick search functionality for KBLI page
-document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('.quick-search-btn').forEach(button => {
-        button.addEventListener('click', function() {
-            const searchTerm = this.getAttribute('data-search');
-            const searchInput = document.getElementById('search-input');
+document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll(".quick-search-btn").forEach((button) => {
+        button.addEventListener("click", function () {
+            const searchTerm = this.getAttribute("data-search");
+            const searchInput = document.getElementById("search-input");
             if (searchInput) {
                 searchInput.value = searchTerm;
-                const form = document.querySelector('form[action*="kbli.search"]');
+                const form = document.querySelector(
+                    'form[action*="kbli.search"]'
+                );
                 if (form) form.submit();
             }
         });
@@ -282,56 +376,68 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // PBUMKU page functionality
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener("DOMContentLoaded", function () {
     // Quick search functionality for PBUMKU page
-    document.querySelectorAll('.quick-search-btn').forEach(button => {
-        button.addEventListener('click', function() {
-            const searchTerm = this.getAttribute('data-search');
-            const searchInput = document.getElementById('pbumku-search-input');
+    document.querySelectorAll(".quick-search-btn").forEach((button) => {
+        button.addEventListener("click", function () {
+            const searchTerm = this.getAttribute("data-search");
+            const searchInput = document.getElementById("pbumku-search-input");
             if (searchInput) {
                 searchInput.value = searchTerm;
-                const form = document.querySelector('form[action*="pbumku.search"]');
+                const form = document.querySelector(
+                    'form[action*="pbumku.search"]'
+                );
                 if (form) form.submit();
             }
         });
     });
 
     // Enhanced dropdown functionality (excluding language dropdowns)
-    const dropdowns = document.querySelectorAll('.dropdown:not(.language-dropdown):not(.language-dropdown-mobile)');
+    const dropdowns = document.querySelectorAll(
+        ".dropdown:not(.language-dropdown):not(.language-dropdown-mobile)"
+    );
 
-    dropdowns.forEach(dropdown => {
+    dropdowns.forEach((dropdown) => {
         const button = dropdown.querySelector('[tabindex="0"]');
-        const menu = dropdown.querySelector('.dropdown-content');
+        const menu = dropdown.querySelector(".dropdown-content");
 
         if (button && menu) {
-            button.addEventListener('click', function(e) {
+            button.addEventListener("click", function (e) {
                 e.preventDefault();
                 e.stopPropagation();
 
-                const isOpen = !menu.classList.contains('hidden');
+                const isOpen = !menu.classList.contains("hidden");
 
                 // Close all other dropdowns (excluding language dropdowns)
-                document.querySelectorAll('.dropdown-content').forEach(otherMenu => {
-                    if (otherMenu !== menu && !otherMenu.closest('.language-dropdown') && !otherMenu.closest('.language-dropdown-mobile')) {
-                        otherMenu.classList.add('hidden');
-                    }
-                });
+                document
+                    .querySelectorAll(".dropdown-content")
+                    .forEach((otherMenu) => {
+                        if (
+                            otherMenu !== menu &&
+                            !otherMenu.closest(".language-dropdown") &&
+                            !otherMenu.closest(".language-dropdown-mobile")
+                        ) {
+                            otherMenu.classList.add("hidden");
+                        }
+                    });
 
                 // Toggle current dropdown
-                menu.classList.toggle('hidden');
+                menu.classList.toggle("hidden");
             });
         }
     });
 
     // Close dropdowns when clicking outside (excluding language dropdowns)
-    document.addEventListener('click', function(e) {
-        if (!e.target.closest('.dropdown')) {
-            document.querySelectorAll('.dropdown-content').forEach(menu => {
-                if (!menu.closest('.language-dropdown') && !menu.closest('.language-dropdown-mobile')) {
-                    menu.classList.add('hidden');
+    document.addEventListener("click", function (e) {
+        if (!e.target.closest(".dropdown")) {
+            document.querySelectorAll(".dropdown-content").forEach((menu) => {
+                if (
+                    !menu.closest(".language-dropdown") &&
+                    !menu.closest(".language-dropdown-mobile")
+                ) {
+                    menu.classList.add("hidden");
                 }
             });
         }
     });
-
 });

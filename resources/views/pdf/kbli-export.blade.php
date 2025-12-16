@@ -65,6 +65,43 @@
         .page-break {
             page-break-before: always;
         }
+
+        /* Styling untuk link - DomPDF v3 memiliki keterbatasan dengan styling link */
+        /* Gunakan inline style langsung pada tag <a> - ini lebih kompatibel */
+
+        /* Default link styling - jangan override jika sudah ada inline style */
+        a {
+            color: blue;
+            text-decoration: underline;
+        }
+
+        /* Style untuk link dengan inline style */
+        a[style] {
+            /* Inline style akan override, tapi kita tetap berikan fallback */
+        }
+
+        /* Style untuk span dalam link */
+        a span {
+            color: blue !important;
+            text-decoration: underline !important;
+        }
+
+        /* Style untuk u dalam link */
+        a u {
+            color: blue !important;
+            text-decoration: underline !important;
+        }
+
+        /* Style untuk kombinasi span dan u dalam link */
+        a span u {
+            color: blue !important;
+            text-decoration: underline !important;
+        }
+
+        /* Pastikan semua elemen dalam link biru */
+        a * {
+            color: blue !important;
+        }
     </style>
 </head>
 
@@ -82,11 +119,11 @@
                         // Bersihkan nomor ganda dari persyaratan->nama
                         $cleanedNama = preg_replace('/^\d+\.\s/', '', trim($persyaratan->nama));
                     @endphp
-                    <li>{{ $cleanedNama }}
+                    <li>{!! function_exists('linkify') ? linkify($cleanedNama) : htmlspecialchars($cleanedNama) !!}
                         @if ($persyaratan->subpoin->isNotEmpty())
                             <ol type="a">
                                 @foreach ($persyaratan->subpoin as $subpoin)
-                                    <li>{{ $subpoin->item }}
+                                    <li>{!! function_exists('linkify') ? linkify($subpoin->item) : htmlspecialchars($subpoin->item) !!}
                                         @if ($subpoin->details->isNotEmpty())
                                             <ul class="sub-level-1">
                                                 @foreach ($subpoin->details as $detail)
@@ -134,7 +171,7 @@
                                                     @foreach ($detailFormattedItems as $item)
                                                         <li
                                                             class="{{ $item['isHeader'] ? 'sub-level-1' : 'sub-level-2' }}">
-                                                            {{ $item['text'] }}
+                                                            {!! function_exists('linkify') ? linkify($item['text']) : htmlspecialchars($item['text']) !!}
                                                         </li>
                                                     @endforeach
                                                 @endforeach

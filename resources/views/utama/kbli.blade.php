@@ -18,42 +18,48 @@
 
         <div class="relative z-10 mx-auto px-5 xl:px-28 text-white" data-aos="fade-down" data-aos-duration="1000">
             <div class="max-w-8xl">
-                <h2
-                    class="text-3xl lg:text-5xl font-bold mb-6 bg-gradient-to-r from-white to-blue-100 bg-clip-text text-transparent">
-                    {{ __('messages.kbli_title') }}
-                </h2>
-                <p class="text-lg lg:text-xl mb-8 opacity-90 leading-relaxed">
-                    {{ __('messages.kbli_description') }}
-                </p>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+                    <!-- Left Column - Text Content -->
+                    <div>
+                        <h2
+                            class="text-3xl lg:text-5xl font-bold mb-6 bg-gradient-to-r from-white to-blue-100 bg-clip-text text-transparent">
+                            {{ __('messages.kbli_title') }}
+                        </h2>
+                        <p class="text-lg lg:text-xl mb-8 opacity-90 leading-relaxed">
+                            {{ __('messages.kbli_description') }}
+                        </p>
 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                    <div class="flex items-start space-x-3 p-4 bg-white/10 rounded-2xl backdrop-blur-sm">
-                        <div class="w-12 h-12 rounded-full bg-yellow-500 flex items-center justify-center flex-shrink-0">
-                            <i class="fas fa-business-time text-white text-lg"></i>
-                        </div>
-                        <div>
-                            <h4 class="font-bold text-yellow-400 mb-2">{{ __('messages.kbli_guide_title') }}</h4>
-                            <p class="text-sm opacity-90">{{ __('messages.kbli_guide_description') }}</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                            <div class="flex items-start space-x-3 p-4 bg-white/10 rounded-2xl backdrop-blur-sm">
+                                <div
+                                    class="w-12 h-12 rounded-full bg-yellow-500 flex items-center justify-center flex-shrink-0">
+                                    <i class="fas fa-business-time text-white text-lg"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-yellow-400 mb-2">{{ __('messages.kbli_guide_title') }}</h4>
+                                    <p class="text-sm opacity-90">{{ __('messages.kbli_guide_description') }}</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start space-x-3 p-4 bg-white/10 rounded-2xl backdrop-blur-sm">
+                                <div
+                                    class="w-12 h-12 rounded-full bg-green-500 flex items-center justify-center flex-shrink-0">
+                                    <i class="fas fa-file-contract text-white text-lg"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-green-400 mb-2">{{ __('messages.kbli_permit_title') }}</h4>
+                                    <p class="text-sm opacity-90">{{ __('messages.kbli_permit_description') }}</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="flex items-start space-x-3 p-4 bg-white/10 rounded-2xl backdrop-blur-sm">
-                        <div class="w-12 h-12 rounded-full bg-green-500 flex items-center justify-center flex-shrink-0">
-                            <i class="fas fa-file-contract text-white text-lg"></i>
-                        </div>
-                        <div>
-                            <h4 class="font-bold text-green-400 mb-2">{{ __('messages.kbli_permit_title') }}</h4>
-                            <p class="text-sm opacity-90">{{ __('messages.kbli_permit_description') }}</p>
-                        </div>
-                    </div>
-
-                    <div class="flex items-start space-x-3 p-4 bg-white/10 rounded-2xl backdrop-blur-sm">
-                        <div class="w-12 h-12 rounded-full bg-blue-500 flex items-center justify-center flex-shrink-0">
-                            <i class="fas fa-chart-line text-white text-lg"></i>
-                        </div>
-                        <div>
-                            <h4 class="font-bold text-blue-400 mb-2">{{ __('messages.kbli_planning_title') }}</h4>
-                            <p class="text-sm opacity-90">{{ __('messages.kbli_planning_description') }}</p>
+                    <!-- Right Column - Image -->
+                    <div class="flex justify-center lg:justify-end" data-aos="fade-left" data-aos-duration="1000"
+                        data-aos-delay="200">
+                        <div class="relative">
+                            <img src="{{ asset('images/gambar-1.png') }}" alt="KBLI Illustration"
+                                class="w-full max-w-md lg:max-w-lg xl:max-w-xl h-auto rounded-2xl shadow-2xl object-contain">
                         </div>
                     </div>
                 </div>
@@ -78,15 +84,30 @@
                 </div>
 
                 <!-- Search Form -->
-                <form action="{{ LaravelLocalization::getLocalizedURL(null, route('kbli.search')) }}" method="GET" class="relative">
+                <form action="{{ LaravelLocalization::getLocalizedURL(null, route('kbli.search')) }}" method="GET"
+                    class="relative">
                     <div class="flex flex-col sm:flex-row gap-4">
                         <div class="relative flex-1">
                             <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                                 <i class="fas fa-search text-gray-400"></i>
                             </div>
+                            <!-- Loading Spinner -->
+                            <div id="kbli-search-loading"
+                                class="absolute inset-y-0 right-0 pr-4 items-center pointer-events-none hidden">
+                                <div class="flex items-center h-full">
+                                    <svg class="animate-spin h-5 w-5 text-blue-600" xmlns="http://www.w3.org/2000/svg"
+                                        fill="none" viewBox="0 0 24 24">
+                                        <circle class="opacity-25" cx="12" cy="12" r="10"
+                                            stroke="currentColor" stroke-width="4"></circle>
+                                        <path class="opacity-75" fill="currentColor"
+                                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                                        </path>
+                                    </svg>
+                                </div>
+                            </div>
                             <input type="text" name="query" id="search-input"
                                 placeholder="{{ __('messages.search_kbli_placeholder') }}"
-                                class="w-full pl-12 pr-4 py-4 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-2xl shadow-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:text-white transition-all duration-300"
+                                class="w-full pl-12 pr-12 py-4 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-2xl shadow-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:text-white transition-all duration-300"
                                 value="{{ $query ?? '' }}" autocomplete="off"
                                 data-live-search-url="{{ LaravelLocalization::getLocalizedURL(null, route('kbli.live-search')) }}" />
                             <!-- Suggestions Dropdown -->
@@ -152,7 +173,8 @@
                                 class="w-16 h-16 bg-yellow-100 dark:bg-yellow-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
                                 <i class="fas fa-exclamation-triangle text-yellow-600 dark:text-yellow-400 text-2xl"></i>
                             </div>
-                            <h4 class="text-xl font-bold text-yellow-800 dark:text-yellow-300 mb-2">{{ __('messages.no_results') }}</h4>
+                            <h4 class="text-xl font-bold text-yellow-800 dark:text-yellow-300 mb-2">
+                                {{ __('messages.no_results') }}</h4>
                             <p class="text-yellow-700 dark:text-yellow-400">
                                 {{ __('messages.no_results_description', ['query' => $query]) }}
                             </p>
@@ -286,4 +308,3 @@
     </section>
 
 @endsection
-

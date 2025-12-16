@@ -55,10 +55,12 @@ class PersyaratanPerizinansTable
                         return '';
                     })
                     ->sortable(query: fn(Builder $query) => $query->orderBy('kbli_id'))
+                    ->wrap()
                     ->searchable(),
                 TextColumn::make('nama')
                     ->label('Nama Persyaratan')
                     ->searchable()
+                    ->wrap()
                     ->sortable(),
                 TextColumn::make('subpoin_count')
                     ->label('Jumlah Sub Persyaratan')

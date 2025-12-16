@@ -26,16 +26,19 @@ class PbumkusTable
                 TextColumn::make('dinas.nama')
                     ->label('Dinas')
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->wrap(),
                 TextColumn::make('kbli_kode')
                     ->label('Kode KBLI')
                     ->getStateUsing(fn($record) => $record->kbli->pluck('kode')->join(', '))
                     ->searchable(query: fn($query, $search) => $query->whereHas('kbli', fn($q) => $q->where('kode', 'like', "%{$search}%")))
-                    ->sortable(false),
+                    ->sortable(false)
+                    ->wrap(),
                 TextColumn::make('nama')
                     ->label('Nama Pbumku')
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->wrap(),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -91,11 +94,19 @@ class PbumkusTable
             ->bulkActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make()
-                        ->label('Hapus Massal')
-                        ->successNotificationTitle('Data berhasil dihapus'),
-
+                        ->label('Hapus yang Dipilih')
+                        ->icon('heroicon-o-trash')
+                        ->color('danger')
+                        ->requiresConfirmation()
+                        ->modalHeading('Konfirmasi Hapus Massal')
+                        ->modalDescription(fn($records) => 'Apakah Anda yakin ingin menghapus ' . $records->count() . ' PBUMKU yang dipilih? Tindakan ini tidak dapat dibatalkan.')
+                        ->modalSubmitActionLabel('Ya, Hapus')
+                        ->modalCancelActionLabel('Batal')
+                        ->successNotificationTitle(fn($records) => $records->count() . ' PBUMKU berhasil dihapus')
+                        ->deselectRecordsAfterCompletion(),
                 ]),
             ])
+            ->selectCurrentPageOnly(false) // Bisa select semua halaman, bukan hanya halaman saat ini
             ->toolbarActions([
                 Action::make('tambah_pbumku')
                     ->label('Tambah Pbumku')

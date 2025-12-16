@@ -10,7 +10,8 @@
         <div class="absolute inset-0 bg-black/20 z-0 dark:bg-black/40"></div>
         <div class="absolute top-0 left-0 w-full h-full overflow-hidden">
             <div class="absolute -top-10 -left-10 w-72 h-72 bg-blue-400/10 rounded-full blur-3xl dark:bg-blue-600/5"></div>
-            <div class="absolute -bottom-20 -right-10 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl dark:bg-indigo-600/5"></div>
+            <div class="absolute -bottom-20 -right-10 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl dark:bg-indigo-600/5">
+            </div>
             <div
                 class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-white/5 rounded-full blur-3xl dark:bg-white/2">
             </div>
@@ -18,7 +19,7 @@
 
         <!-- SLIDER UTAMA -->
         <div
-            class="swiper mySwiper carouselUtama swiper-container swiper1 w-full h-[300px] lg:h-[70vh] relative mx-auto z-10 overflow-hidden">
+            class="swiper mySwiper carouselUtama swiper-container swiper1 w-full h-[300px] lg:h-[55vh] relative mx-auto z-10 overflow-hidden">
             <div class="swiper-wrapper">
                 <div class="swiper-slide w-full h-full relative overflow-hidden">
                     <img src="{{ asset('images/bg_banner1.jpg') }}" alt="{{ __('messages.slider_1_title') }}" loading="lazy"
@@ -28,8 +29,10 @@
                     </div>
                     <div
                         class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-white text-center z-10 w-[70%]">
-                        <h2 class="text-base md:text-2xl lg:text-6xl font-bold drop-shadow-md">{{ __('messages.slider_1_title') }}</h2>
-                        <p class="text-xs md:text-sm lg:text-xl lg:mt-3 drop-shadow-md">{{ __('messages.slider_1_description') }}</p>
+                        <h2 class="text-base md:text-2xl lg:text-6xl font-bold drop-shadow-md">
+                            {{ __('messages.slider_1_title') }}</h2>
+                        <p class="text-xs md:text-sm lg:text-xl lg:mt-3 drop-shadow-md">
+                            {{ __('messages.slider_1_description') }}</p>
                     </div>
                 </div>
                 <div class="swiper-slide w-full h-full relative overflow-hidden">
@@ -40,8 +43,10 @@
                     </div>
                     <div
                         class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-white text-center z-10 w-[70%]">
-                        <h2 class="text-base md:text-2xl lg:text-6xl font-bold drop-shadow-md">{{ __('messages.slider_2_title') }}</h2>
-                        <p class="text-xs md:text-sm lg:text-xl lg:mt-3 drop-shadow-md">{{ __('messages.slider_2_description') }}</p>
+                        <h2 class="text-base md:text-2xl lg:text-6xl font-bold drop-shadow-md">
+                            {{ __('messages.slider_2_title') }}</h2>
+                        <p class="text-xs md:text-sm lg:text-xl lg:mt-3 drop-shadow-md">
+                            {{ __('messages.slider_2_description') }}</p>
                     </div>
                 </div>
                 <div class="swiper-slide w-full h-full relative overflow-hidden">
@@ -54,7 +59,8 @@
                         class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-white text-center z-10 w-[70%]">
                         <h2 class="text-xl md:text-3xl lg:text-5xl xl:text-6xl font-bold mb-3 lg:mb-5 animate-fade-in-up">
                             {{ __('messages.slider_3_title') }}</h2>
-                        <p class="text-sm md:text-base lg:text-xl opacity-90 animate-fade-in-up delay-200">{{ __('messages.slider_3_description') }}</p>
+                        <p class="text-sm md:text-base lg:text-xl opacity-90 animate-fade-in-up delay-200">
+                            {{ __('messages.slider_3_description') }}</p>
                     </div>
                 </div>
             </div>
@@ -70,12 +76,13 @@
 
     <!-- LAYANAN KAMI SECTION -->
     <section
-        class="relative py-12 lg:py-20 bg-gradient-to-b from-white to-blue-50 dark:from-gray-900 dark:to-gray-800 overflow-hidden">
+        class="relative py-12 lg:py-18 bg-gradient-to-b from-white to-blue-50 dark:from-gray-900 dark:to-gray-800 overflow-hidden">
         <div class="absolute top-0 left-0 w-full h-20 bg-gradient-to-b from-transparent to-white/80 dark:to-gray-900/80">
         </div>
         <div class="container mx-auto px-4 lg:px-8 relative z-10">
             <div class="max-w-4xl mx-auto text-center mb-10 lg:mb-16">
-                <h2 class="text-2xl lg:text-4xl font-bold text-blue-900 dark:text-white mb-4" data-aos="fade-up">{{ __('messages.services_title') }}</h2>
+                <h2 class="text-2xl lg:text-4xl font-bold text-blue-900 dark:text-white mb-4" data-aos="fade-up">
+                    {{ __('messages.services_title') }}</h2>
                 <p class="text-gray-600 dark:text-gray-300 text-base lg:text-lg" data-aos="fade-up" data-aos-delay="100">
                     {{ __('messages.services_description') }}</p>
             </div>
@@ -100,7 +107,8 @@
                                         </div>
                                         <h3 class="text-xl lg:text-2xl font-bold">{{ __('messages.service_1_title') }}</h3>
                                     </div>
-                                    <p class="text-sm lg:text-base opacity-90">{{ __('messages.service_1_description') }}</p>
+                                    <p class="text-sm lg:text-base opacity-90">{{ __('messages.service_1_description') }}
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -120,7 +128,8 @@
                                         </div>
                                         <h3 class="text-xl lg:text-2xl font-bold">{{ __('messages.service_2_title') }}</h3>
                                     </div>
-                                    <p class="text-sm lg:text-base opacity-90">{{ __('messages.service_2_description') }}</p>
+                                    <p class="text-sm lg:text-base opacity-90">{{ __('messages.service_2_description') }}
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -140,7 +149,8 @@
                                         </div>
                                         <h3 class="text-xl lg:text-2xl font-bold">{{ __('messages.service_3_title') }}</h3>
                                     </div>
-                                    <p class="text-sm lg:text-base opacity-90">{{ __('messages.service_3_description') }}</p>
+                                    <p class="text-sm lg:text-base opacity-90">{{ __('messages.service_3_description') }}
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -168,8 +178,10 @@
                     </div>
                 </div>
                 <div class="w-full lg:w-1/2 p-4 lg:p-8 order-1 lg:order-2" data-aos="fade-left">
-                    <h2 class="text-2xl lg:text-4xl font-bold text-blue-900 dark:text-white mb-4 lg:mb-6">{{ __('messages.about_title') }}</h2>
-                    <p class="text-gray-600 dark:text-gray-300 text-base lg:text-lg mb-6">{{ __('messages.about_description') }}</p>
+                    <h2 class="text-2xl lg:text-4xl font-bold text-blue-900 dark:text-white mb-4 lg:mb-6">
+                        {{ __('messages.about_title') }}</h2>
+                    <p class="text-gray-600 dark:text-gray-300 text-base lg:text-lg mb-6">
+                        {{ __('messages.about_description') }}</p>
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8">
                         <div class="flex items-start p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
@@ -210,7 +222,8 @@
     <div
         class="w-full py-12 lg:py-20 bg-gradient-to-br from-blue-800 to-blue-600 dark:from-gray-800 dark:to-gray-700 text-white overflow-hidden">
         <div class="mx-auto px-5 xl:px-28">
-            <h2 class="text-center text-2xl lg:text-4xl font-bold mb-4" data-aos="fade-down">{{ __('messages.info_title') }}</h2>
+            <h2 class="text-center text-2xl lg:text-4xl font-bold mb-4" data-aos="fade-down">
+                {{ __('messages.info_title') }}</h2>
             <p class="text-center max-w-2xl mx-auto mb-10 lg:mb-16 opacity-90" data-aos="fade-down" data-aos-delay="200">
                 {{ __('messages.info_description') }}</p>
 
@@ -247,7 +260,8 @@
                                 <i class="fa-solid fa-swatchbook fa-3x text-white"></i>
                             </div>
                             <h3 class="text-xl font-bold mb-3">{{ __('messages.info_pb_umku_title') }}</h3>
-                            <p class="text-sm lg:text-base opacity-90 mb-4">{{ __('messages.info_pb_umku_description') }}</p>
+                            <p class="text-sm lg:text-base opacity-90 mb-4">{{ __('messages.info_pb_umku_description') }}
+                            </p>
                             <button class="text-yellow-400 font-semibold text-sm flex items-center mt-auto">
                                 {{ __('messages.learn_more') }}
                                 <svg class="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none"
@@ -263,14 +277,14 @@
 
                 <div class="group bg-white/10 dark:bg-white/5 backdrop-blur-sm p-6 rounded-2xl hover:bg-white/20 dark:hover:bg-white/10 transition-all duration-500 hover:-translate-y-2 cursor-pointer"
                     data-aos="fade-up" data-aos-duration="1000" data-aos-delay="400">
-                    <a href="https://oss.go.id/informasi/nib">
+                    <a href="https://oss.go.id/id/panduan/635970086345c7d71a8144b2">
                         <div class="flex flex-col items-center text-center">
                             <div
                                 class="bg-green-500 p-4 rounded-2xl mb-4 group-hover:scale-110 transition-transform duration-300">
                                 <i class="fa-solid fa-folder-open fa-3x text-white"></i>
                             </div>
-                            <h3 class="text-xl font-bold mb-3">{{ __('messages.info_nib_title') }}</h3>
-                            <p class="text-sm lg:text-base opacity-90 mb-4">{{ __('messages.info_nib_description') }}</p>
+                            <h3 class="text-xl font-bold mb-3">{{ __('messages.info_lkpm_title') }}</h3>
+                            <p class="text-sm lg:text-base opacity-90 mb-4">{{ __('messages.info_lkpm_description') }}</p>
                             <button class="text-yellow-400 font-semibold text-sm flex items-center mt-auto">
                                 {{ __('messages.learn_more') }}
                                 <svg class="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none"
@@ -291,7 +305,8 @@
     <section class="py-12 lg:py-20 bg-white dark:bg-gray-900 overflow-hidden">
         <div class="container mx-auto px-4 lg:px-8">
             <div class="max-w-4xl mx-auto text-center mb-10 lg:mb-16">
-                <h2 class="text-2xl lg:text-4xl font-bold text-blue-900 dark:text-white mb-4" data-aos="fade-down">{{ __('messages.testimonials_title') }}</h2>
+                <h2 class="text-2xl lg:text-4xl font-bold text-blue-900 dark:text-white mb-4" data-aos="fade-down">
+                    {{ __('messages.testimonials_title') }}</h2>
                 <p class="text-gray-600 dark:text-gray-300 text-base lg:text-lg" data-aos="fade-down"
                     data-aos-delay="100">{{ __('messages.testimonials_description') }}</p>
             </div>
@@ -305,11 +320,14 @@
                             AS
                         </div>
                         <div>
-                            <h4 class="font-bold text-blue-900 dark:text-white">{{ __('messages.testimonial_1_name') }}</h4>
-                            <p class="text-sm text-blue-700 dark:text-blue-300">{{ __('messages.testimonial_1_role') }}</p>
+                            <h4 class="font-bold text-blue-900 dark:text-white">{{ __('messages.testimonial_1_name') }}
+                            </h4>
+                            <p class="text-sm text-blue-700 dark:text-blue-300">{{ __('messages.testimonial_1_role') }}
+                            </p>
                         </div>
                     </div>
-                    <p class="text-gray-600 dark:text-gray-300 text-sm lg:text-base">{{ __('messages.testimonial_1_text') }}</p>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm lg:text-base">
+                        {{ __('messages.testimonial_1_text') }}</p>
                     <div class="flex text-yellow-400 mt-3">
                         <i class="fas fa-star"></i>
                         <i class="fas fa-star"></i>
@@ -327,11 +345,14 @@
                             DS
                         </div>
                         <div>
-                            <h4 class="font-bold text-blue-900 dark:text-white">{{ __('messages.testimonial_2_name') }}</h4>
-                            <p class="text-sm text-blue-700 dark:text-blue-300">{{ __('messages.testimonial_2_role') }}</p>
+                            <h4 class="font-bold text-blue-900 dark:text-white">{{ __('messages.testimonial_2_name') }}
+                            </h4>
+                            <p class="text-sm text-blue-700 dark:text-blue-300">{{ __('messages.testimonial_2_role') }}
+                            </p>
                         </div>
                     </div>
-                    <p class="text-gray-600 dark:text-gray-300 text-sm lg:text-base">{{ __('messages.testimonial_2_text') }}</p>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm lg:text-base">
+                        {{ __('messages.testimonial_2_text') }}</p>
                     <div class="flex text-yellow-400 mt-3">
                         <i class="fas fa-star"></i>
                         <i class="fas fa-star"></i>
@@ -349,11 +370,14 @@
                             RB
                         </div>
                         <div>
-                            <h4 class="font-bold text-blue-900 dark:text-white">{{ __('messages.testimonial_3_name') }}</h4>
-                            <p class="text-sm text-blue-700 dark:text-blue-300">{{ __('messages.testimonial_3_role') }}</p>
+                            <h4 class="font-bold text-blue-900 dark:text-white">{{ __('messages.testimonial_3_name') }}
+                            </h4>
+                            <p class="text-sm text-blue-700 dark:text-blue-300">{{ __('messages.testimonial_3_role') }}
+                            </p>
                         </div>
                     </div>
-                    <p class="text-gray-600 dark:text-gray-300 text-sm lg:text-base">{{ __('messages.testimonial_3_text') }}</p>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm lg:text-base">
+                        {{ __('messages.testimonial_3_text') }}</p>
                     <div class="flex text-yellow-400 mt-3">
                         <i class="fas fa-star"></i>
                         <i class="fas fa-star"></i>

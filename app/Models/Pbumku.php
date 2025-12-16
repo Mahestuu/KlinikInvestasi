@@ -59,7 +59,8 @@ class Pbumku extends Model
         });
 
         static::updating(function ($pbumku) {
-            if ($pbumku->isDirty('nama') && empty($pbumku->slug)) {
+            // Jika nama berubah, selalu generate slug baru
+            if ($pbumku->isDirty('nama')) {
                 $pbumku->slug = $pbumku->generateSlug();
             }
         });

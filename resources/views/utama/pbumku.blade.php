@@ -101,15 +101,30 @@
                     </div>
 
                     <!-- Search Form -->
-                    <form action="{{ LaravelLocalization::getLocalizedURL(null, route('pbumku.search')) }}" method="GET" class="flex-1">
+                    <form action="{{ LaravelLocalization::getLocalizedURL(null, route('pbumku.search')) }}" method="GET"
+                        class="flex-1">
                         <div class="flex flex-col sm:flex-row gap-4">
                             <div class="relative flex-1">
                                 <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                                     <i class="fas fa-search text-gray-400"></i>
                                 </div>
+                                <!-- Loading Spinner -->
+                                <div id="pbumku-search-loading"
+                                    class="absolute inset-y-0 right-0 pr-4 items-center pointer-events-none hidden">
+                                    <div class="flex items-center h-full">
+                                        <svg class="animate-spin h-5 w-5 text-blue-600" xmlns="http://www.w3.org/2000/svg"
+                                            fill="none" viewBox="0 0 24 24">
+                                            <circle class="opacity-25" cx="12" cy="12" r="10"
+                                                stroke="currentColor" stroke-width="4"></circle>
+                                            <path class="opacity-75" fill="currentColor"
+                                                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                                            </path>
+                                        </svg>
+                                    </div>
+                                </div>
                                 <input type="text" name="query" id="pbumku-search-input"
                                     placeholder="{{ __('messages.search_placeholder') }}"
-                                    class="w-full pl-12 pr-4 py-4 text-base bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-2xl shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:text-white transition-all duration-300"
+                                    class="w-full pl-12 pr-12 py-4 text-base bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-2xl shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:text-white transition-all duration-300"
                                     value="{{ $query ?? '' }}" autocomplete="off"
                                     data-live-search-url="{{ LaravelLocalization::getLocalizedURL(null, route('pbumku.live-search')) }}" />
                                 @if ($selectedDinas)
@@ -168,7 +183,8 @@
                             class="w-24 h-24 mx-auto mb-6 bg-yellow-100 dark:bg-yellow-900 rounded-full flex items-center justify-center">
                             <i class="fas fa-search text-yellow-600 dark:text-yellow-400 text-3xl"></i>
                         </div>
-                        <h4 class="text-2xl font-bold text-gray-800 dark:text-white mb-3">{{ __('messages.no_results') }}</h4>
+                        <h4 class="text-2xl font-bold text-gray-800 dark:text-white mb-3">{{ __('messages.no_results') }}
+                        </h4>
                         <p class="text-gray-600 dark:text-gray-300 mb-6 max-w-md mx-auto">
                             {{ __('messages.no_results_description', ['query' => $query ?? __('messages.all')]) }}
                             @if ($selectedDinas)
@@ -244,7 +260,8 @@
                                                 {{ __('messages.related_kbli') }}
                                             </h5>
                                             @if ($item->kbli->isEmpty())
-                                                <p class="text-gray-500 dark:text-gray-400 text-sm">{{ __('messages.no_kbli') }}</p>
+                                                <p class="text-gray-500 dark:text-gray-400 text-sm">
+                                                    {{ __('messages.no_kbli') }}</p>
                                             @else
                                                 <div class="flex flex-wrap gap-2">
                                                     @foreach ($item->kbli as $kbli)

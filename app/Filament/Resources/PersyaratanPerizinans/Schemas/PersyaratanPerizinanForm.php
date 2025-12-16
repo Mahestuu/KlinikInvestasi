@@ -29,7 +29,6 @@ class PersyaratanPerizinanForm
                         TextInput::make('nama')
                             ->label('Nama Persyaratan')
                             ->required()
-                            ->maxLength(255)
                             ->placeholder('Masukkan nama persyaratan')
                             ->columnSpan('full'),
                         Repeater::make('subpoin')

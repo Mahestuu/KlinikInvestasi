@@ -10,6 +10,7 @@ use Filament\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Filament\Actions\Action;
+use Illuminate\Database\Eloquent\Builder;
 
 
 class PersyaratanPbumkusTable
@@ -17,20 +18,50 @@ class PersyaratanPbumkusTable
     public static function configure(Table $table): Table
     {
         return $table
+            ->defaultSort('pbumku_id')
             ->columns([
-                TextColumn::make('row_number')
+                TextColumn::make('pbumku_row_number')
                     ->label('No')
-                    ->rowIndex()
-                    ->sortable(false)
-                    ->searchable(false),
+                    ->getStateUsing(function ($record, $rowLoop) {
+                        static $pbumkuIds = [];
+                        static $index = 0;
+                        static $lastPbumkuId = null;
+
+                        $pbumkuId = $record->pbumku_id;
+
+                        if ($pbumkuId !== $lastPbumkuId) {
+                            $pbumkuIds[$pbumkuId] = ++$index;
+                            $lastPbumkuId = $pbumkuId;
+                            return $pbumkuIds[$pbumkuId];
+                        }
+
+                        return '';
+                    })
+                    ->sortable(query: fn(Builder $query) => $query->orderBy('pbumku_id'))
+                    ->searchable(false)
+                    ->alignCenter(),
                 TextColumn::make('pbumku.nama')
                     ->label('Pbumku')
-                    ->searchable()
-                    ->sortable(),
+                    ->getStateUsing(function ($record, $rowLoop) {
+                        static $lastPbumkuId = null;
+
+                        $pbumkuId = $record->pbumku_id;
+
+                        if ($pbumkuId !== $lastPbumkuId) {
+                            $lastPbumkuId = $pbumkuId;
+                            return $record->pbumku->nama;
+                        }
+
+                        return '';
+                    })
+                    ->sortable(query: fn(Builder $query) => $query->orderBy('pbumku_id'))
+                    ->wrap()
+                    ->searchable(),
                 TextColumn::make('nama')
                     ->label('Nama Persyaratan')
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->wrap(),
                 TextColumn::make('subpoin_count')
                     ->label('Jumlah Sub-Poin')
                     ->getStateUsing(function ($record) {
@@ -59,11 +90,15 @@ class PersyaratanPbumkusTable
                         return [
                             'pbumku_id' => $record->pbumku_id,
                             'persyaratan' => PersyaratanPbumku::where('pbumku_id', $record->pbumku_id)
+                                ->with('subpoinPbumku.details')
                                 ->get()
                                 ->map(fn($persyaratan) => [
                                     'nama' => $persyaratan->nama,
                                     'subpoin' => $persyaratan->subpoinPbumku->map(fn($subpoin) => [
                                         'item' => $subpoin->item,
+                                        'details' => $subpoin->details->map(fn($detail) => [
+                                            'text' => $detail->text,
+                                        ])->toArray(),
                                     ])->toArray(),
                                 ])->toArray(),
                         ];
@@ -77,7 +112,15 @@ class PersyaratanPbumkusTable
                                 'nama' => $persyaratanData['nama'],
                             ]);
                             foreach ($persyaratanData['subpoin'] as $subpoin) {
-                                $persyaratan->subpoinPbumku()->create(['item' => $subpoin['item']]);
+                                $subpoinRecord = $persyaratan->subpoinPbumku()->create(['item' => $subpoin['item']]);
+                                // Simpan details jika ada
+                                if (!empty($subpoin['details'])) {
+                                    foreach ($subpoin['details'] as $detail) {
+                                        $subpoinRecord->details()->create([
+                                            'text' => $detail['text'],
+                                        ]);
+                                    }
+                                }
                             }
                         }
                     })
@@ -104,11 +147,19 @@ class PersyaratanPbumkusTable
             ->bulkActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make()
-                        ->label('Hapus Massal')
-                        ->successNotificationTitle('Data berhasil dihapus'),
-
+                        ->label('Hapus yang Dipilih')
+                        ->icon('heroicon-o-trash')
+                        ->color('danger')
+                        ->requiresConfirmation()
+                        ->modalHeading('Konfirmasi Hapus Massal')
+                        ->modalDescription(fn($records) => 'Apakah Anda yakin ingin menghapus ' . $records->count() . ' persyaratan yang dipilih? Tindakan ini tidak dapat dibatalkan.')
+                        ->modalSubmitActionLabel('Ya, Hapus')
+                        ->modalCancelActionLabel('Batal')
+                        ->successNotificationTitle(fn($records) => $records->count() . ' persyaratan berhasil dihapus')
+                        ->deselectRecordsAfterCompletion(),
                 ]),
             ])
+            ->selectCurrentPageOnly(false) // Bisa select semua halaman, bukan hanya halaman saat ini
             ->toolbarActions([
                 Action::make('tambah_persyaratan')
                     ->label('Tambah Persyaratan Perizinan')
@@ -121,7 +172,15 @@ class PersyaratanPbumkusTable
                                 'nama' => $persyaratanData['nama'],
                             ]);
                             foreach ($persyaratanData['subpoin'] as $subpoin) {
-                                $persyaratan->subpoinPbumku()->create(['item' => $subpoin['item']]);
+                                $subpoinRecord = $persyaratan->subpoinPbumku()->create(['item' => $subpoin['item']]);
+                                // Simpan details jika ada
+                                if (!empty($subpoin['details'])) {
+                                    foreach ($subpoin['details'] as $detail) {
+                                        $subpoinRecord->details()->create([
+                                            'text' => $detail['text'],
+                                        ]);
+                                    }
+                                }
                             }
                         }
                     })

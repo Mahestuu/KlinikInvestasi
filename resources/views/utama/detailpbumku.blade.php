@@ -102,7 +102,8 @@
                                         class="w-10 h-10 bg-blue-100 dark:bg-blue-900 rounded-xl flex items-center justify-center">
                                         <i class="fas fa-tags text-blue-600 dark:text-blue-400"></i>
                                     </div>
-                                    <h3 class="text-2xl font-bold text-gray-800 dark:text-white">{{ __('messages.related_kbli_title') }}</h3>
+                                    <h3 class="text-2xl font-bold text-gray-800 dark:text-white">
+                                        {{ __('messages.related_kbli_title') }}</h3>
                                 </div>
 
                                 <div class="flex flex-wrap gap-3">
@@ -127,7 +128,8 @@
                                         <i class="fas fa-clipboard-list text-white text-lg"></i>
                                     </div>
                                     <div>
-                                        <h3 class="text-2xl font-bold text-white">{{ __('messages.pbumku_requirements_title') }}</h3>
+                                        <h3 class="text-2xl font-bold text-white">
+                                            {{ __('messages.pbumku_requirements_title') }}</h3>
                                         <p class="text-base-200 dark:text-white">
                                             {{ __('messages.pbumku_requirements_description') }}
                                         </p>
@@ -163,8 +165,32 @@
                                                         </div>
                                                     </div>
                                                     <div class="flex-1">
-                                                        <h4 class="text-xl font-bold text-gray-800 dark:text-white mb-4">
-                                                            {{ $persyaratan->nama }}
+                                                        @php
+                                                            // Deteksi link dalam nama persyaratan dan buat clickable
+                                                            // Pattern mendeteksi URL: http://, https://, www., atau domain langsung (termasuk bit.ly)
+                                                            $urlPattern =
+                                                                '/(https?:\/\/[^\s<>"\']+|www\.[^\s<>"\']+)/i';
+                                                            $formattedNama = preg_replace_callback(
+                                                                $urlPattern,
+                                                                function ($matches) {
+                                                                    $url = $matches[0];
+                                                                    $href = $url;
+                                                                    // Jika URL tidak dimulai dengan http:// atau https://, tambahkan https://
+                                                                    if (!preg_match('/^https?:\/\//i', $url)) {
+                                                                        $href = 'https://' . $url;
+                                                                    }
+                                                                    return '<a href="' .
+                                                                        htmlspecialchars($href, ENT_QUOTES, 'UTF-8') .
+                                                                        '" class="text-blue-600 dark:text-blue-400 hover:underline font-medium break-all" target="_blank" rel="noopener noreferrer">' .
+                                                                        htmlspecialchars($url, ENT_QUOTES, 'UTF-8') .
+                                                                        '</a>';
+                                                                },
+                                                                $persyaratan->nama,
+                                                            );
+                                                        @endphp
+                                                        <h4
+                                                            class="text-xl font-bold text-gray-800 dark:text-white mb-4 break-words">
+                                                            {!! $formattedNama !!}
                                                         </h4>
 
                                                         @if ($persyaratan->subpoinPbumku->isNotEmpty())
@@ -188,11 +214,38 @@
                                                                                     '',
                                                                                     $item,
                                                                                 );
+                                                                                // Pattern untuk mendeteksi URL (termasuk bit.ly dan URL shortener lainnya)
+                                                                                // Pattern mendeteksi: http://, https://, atau www.
                                                                                 $urlPattern =
                                                                                     '/(https?:\/\/[^\s<>"\']+|www\.[^\s<>"\']+)/i';
-                                                                                $formattedItem = preg_replace(
+                                                                                $formattedItem = preg_replace_callback(
                                                                                     $urlPattern,
-                                                                                    '<a href="$1" class="text-blue-600 dark:text-blue-400 hover:underline font-medium" target="_blank" rel="noopener noreferrer">$1</a>',
+                                                                                    function ($matches) {
+                                                                                        $url = $matches[0];
+                                                                                        $href = $url;
+                                                                                        // Jika URL tidak dimulai dengan http:// atau https://, tambahkan https://
+                                                                                        if (
+                                                                                            !preg_match(
+                                                                                                '/^https?:\/\//i',
+                                                                                                $url,
+                                                                                            )
+                                                                                        ) {
+                                                                                            $href = 'https://' . $url;
+                                                                                        }
+                                                                                        return '<a href="' .
+                                                                                            htmlspecialchars(
+                                                                                                $href,
+                                                                                                ENT_QUOTES,
+                                                                                                'UTF-8',
+                                                                                            ) .
+                                                                                            '" class="text-blue-600 dark:text-blue-400 hover:underline font-medium break-all" target="_blank" rel="noopener noreferrer">' .
+                                                                                            htmlspecialchars(
+                                                                                                $url,
+                                                                                                ENT_QUOTES,
+                                                                                                'UTF-8',
+                                                                                            ) .
+                                                                                            '</a>';
+                                                                                    },
                                                                                     $cleanItem,
                                                                                 );
                                                                             @endphp
